@@ -3,6 +3,8 @@
 /** @var array $customers */
 /** @var string $search */
 
+use App\Utils\TimezoneHelper;
+
 $this->extend('layout');
 ?>
 
@@ -71,7 +73,7 @@ $this->extend('layout');
                                 </p>
                             <?php endif; ?>
                             <p class="customer-date">
-                                <strong>Added:</strong> <?= date('M j, Y', strtotime($customer->getCreatedAt())) ?>
+                                <strong>Added:</strong> <?= TimezoneHelper::formatForDisplay($customer->getCreatedAt(), 'M j, Y') ?>
                             </p>
                         </div>
                         <div class="customer-actions">

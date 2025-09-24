@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Database\Database;
 use App\Models\Lead;
+use App\Utils\TimezoneHelper;
 use PDO;
 
 /**
@@ -48,7 +49,7 @@ class LeadRepository
         $sql = "INSERT INTO leads (name, email, phone, company, source, notes, created_at, updated_at)
                 VALUES (:name, :email, :phone, :company, :source, :notes, :created_at, :updated_at)";
 
-        $now = date('Y-m-d H:i:s');
+        $now = TimezoneHelper::nowUtc();
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
@@ -82,7 +83,7 @@ class LeadRepository
             'source' => $source,
             'status' => $status,
             'notes' => $notes,
-            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_at' => TimezoneHelper::nowUtc(),
         ]);
     }
 

@@ -10,6 +10,8 @@
 /** @var array $leadsByStatus */
 /** @var array $recentInteractions */
 
+use App\Utils\TimezoneHelper;
+
 $this->extend('layout');
 ?>
 
@@ -119,7 +121,7 @@ $this->extend('layout');
                                 <strong><?= htmlspecialchars($interaction->getSubject()) ?></strong>
                                 <span class="activity-type">[<?= ucfirst($interaction->getType()) ?>]</span>
                                 <p class="activity-description"><?= htmlspecialchars($interaction->getDescription()) ?></p>
-                                <small class="activity-date"><?= date('M j, Y g:i A', strtotime($interaction->getInteractionDate())) ?></small>
+                                <small class="activity-date"><?= TimezoneHelper::formatForDisplay($interaction->getInteractionDate()) ?></small>
                             </div>
                         </div>
                     <?php endforeach; ?>

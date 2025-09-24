@@ -3,6 +3,8 @@
 /** @var \App\Models\Customer $customer */
 /** @var array $interactions */
 
+use App\Utils\TimezoneHelper;
+
 $this->extend('layout');
 ?>
 
@@ -49,7 +51,7 @@ $this->extend('layout');
                     </div>
                     <div class="info-item">
                         <label>Added:</label>
-                        <span><?= date('M j, Y g:i A', strtotime($customer->getCreatedAt())) ?></span>
+                        <span><?= TimezoneHelper::formatForDisplay($customer->getCreatedAt()) ?></span>
                     </div>
                 </div>
                 <?php if ($customer->getNotes()): ?>
@@ -84,7 +86,7 @@ $this->extend('layout');
                     </div>
                     <div class="form-group">
                         <label for="interaction_date">Date:</label>
-                        <input type="datetime-local" name="interaction_date" id="interaction_date" value="<?= date('Y-m-d\TH:i') ?>">
+                        <input type="datetime-local" name="interaction_date" id="interaction_date" value="<?= TimezoneHelper::formatForInput(TimezoneHelper::nowUtc()) ?>">
                     </div>
                     <button type="submit" class="btn btn-primary">Add Interaction</button>
                 </form>
@@ -103,7 +105,7 @@ $this->extend('layout');
                             <div class="interaction-header">
                                 <strong><?= htmlspecialchars($interaction->getSubject()) ?></strong>
                                 <span class="interaction-type">[<?= ucfirst($interaction->getType()) ?>]</span>
-                                <span class="interaction-date"><?= date('M j, Y g:i A', strtotime($interaction->getInteractionDate())) ?></span>
+                                <span class="interaction-date"><?= TimezoneHelper::formatForDisplay($interaction->getInteractionDate()) ?></span>
                             </div>
                             <?php if ($interaction->getDescription()): ?>
                                 <div class="interaction-description">

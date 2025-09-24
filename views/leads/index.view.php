@@ -2,6 +2,8 @@
 /** @var \App\Template $this */
 /** @var array $leads */
 
+use App\Utils\TimezoneHelper;
+
 $this->extend('layout');
 ?>
 
@@ -58,7 +60,7 @@ $this->extend('layout');
                                 </p>
                             <?php endif; ?>
                             <p class="lead-date">
-                                <strong>Added:</strong> <?= date('M j, Y', strtotime($lead->getCreatedAt())) ?>
+                                <strong>Added:</strong> <?= TimezoneHelper::formatForDisplay($lead->getCreatedAt(), 'M j, Y') ?>
                             </p>
                         </div>
                         <div class="lead-actions">

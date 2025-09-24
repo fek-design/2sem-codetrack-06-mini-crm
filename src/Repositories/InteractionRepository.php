@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Database\Database;
 use App\Models\Interaction;
+use App\Utils\TimezoneHelper;
 use PDO;
 
 /**
@@ -53,8 +54,14 @@ class InteractionRepository
         $sql = "INSERT INTO interactions (customer_id, type, subject, description, interaction_date, created_at)
                 VALUES (:customer_id, :type, :subject, :description, :interaction_date, :created_at)";
 
-        $now = date('Y-m-d H:i:s');
-        $interactionDate = $interactionDate ?? $now;
+        $now = TimezoneHelper::nowUtc();
+
+        // Convert interaction date to UTC for storage
+        if ($interactionDate) {
+            $interactionDate = TimezoneHelper::toUtc($interactionDate);
+        } else {
+            $interactionDate = $now;
+        }
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
@@ -75,8 +82,14 @@ class InteractionRepository
         $sql = "INSERT INTO interactions (lead_id, type, subject, description, interaction_date, created_at)
                 VALUES (:lead_id, :type, :subject, :description, :interaction_date, :created_at)";
 
-        $now = date('Y-m-d H:i:s');
-        $interactionDate = $interactionDate ?? $now;
+        $now = TimezoneHelper::nowUtc();
+
+        // Convert interaction date to UTC for storage
+        if ($interactionDate) {
+            $interactionDate = TimezoneHelper::toUtc($interactionDate);
+        } else {
+            $interactionDate = $now;
+        }
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
@@ -128,5 +141,14 @@ class InteractionRepository
             interaction_date: $row['interaction_date'],
             created_at: $row['created_at'],
         );
+    }
+
+    /**
+     * Normalize datetime input to UTC format for storage
+     * @deprecated Use TimezoneHelper::toUtc() instead
+     */
+    private function normalizeDateTime(string $datetime): string
+    {
+        return TimezoneHelper::toUtc($datetime);
     }
 }
