@@ -23,7 +23,7 @@ $this->extend('layout');
     <div class="container">
         <!-- Search Form -->
         <div class="search-section">
-            <form method="GET" class="search-form">
+            <form method="GET" class="search-form form-spacing">
                 <input type="text" name="search" value="<?= htmlspecialchars($search) ?>"
                        placeholder="Search customers by name, email, or company..." class="search-input">
                 <button type="submit" class="btn btn-secondary">Search</button>

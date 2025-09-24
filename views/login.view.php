@@ -17,7 +17,7 @@ $this->extend('layout');
         </h1>
 
         <div class="login-form-wrapper">
-            <form method="POST" action="/login" class="login-form">
+            <form method="POST" action="/login" class="login-form form-spacing">
                 <input
                     type="hidden"
                     name="_token"

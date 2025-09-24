@@ -29,7 +29,7 @@ $this->extend('layout');
                 <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="/leads/<?= $lead->getId() ?>" class="lead-form">
+            <form method="POST" action="/leads/<?= $lead->getId() ?>" class="lead-form form-spacing">
                 <div class="form-group">
                     <label for="name">Name *</label>
                     <input type="text" name="name" id="name" required

@@ -164,8 +164,8 @@
 }
 
 /* Status Lists */
-.status-list {
-    space-y: 0.5rem;
+.status-list > * + * {
+    margin-top: 0.5rem;
 }
 
 .status-item {
@@ -195,8 +195,8 @@
 }
 
 /* Activity Lists */
-.activity-list {
-    space-y: 1rem;
+.activity-list > * + * {
+    margin-top: 1rem;
 }
 
 .activity-item {
@@ -327,7 +327,7 @@
 }
 
 .customer-form, .lead-form {
-    space-y: 1.5rem;
+    /* Spacing handled by .form-group margin-bottom */
 }
 
 .form-group {
@@ -470,8 +470,8 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.interactions-list {
-    space-y: 1rem;
+.interactions-list > * + * {
+    margin-top: 1rem;
 }
 
 .interaction-item {
@@ -510,8 +510,8 @@
     line-height: 1.5;
 }
 
-.interaction-form {
-    space-y: 1rem;
+.interaction-form > * + * {
+    margin-top: 1rem;
 }
 
 /* Empty States */

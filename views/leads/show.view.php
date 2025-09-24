@@ -75,7 +75,7 @@ $this->extend('layout');
             <!-- Add Interaction Form -->
             <div class="interaction-form-card">
                 <h2>Add Interaction</h2>
-                <form method="POST" action="/leads/<?= $lead->getId() ?>/interactions" class="interaction-form">
+                <form method="POST" action="/leads/<?= $lead->getId() ?>/interactions" class="interaction-form form-spacing">
                     <div class="form-group">
                         <label for="type">Type:</label>
                         <select name="type" id="type" required>

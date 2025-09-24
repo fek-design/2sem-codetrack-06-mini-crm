@@ -3,7 +3,6 @@
 /** @var string|null $success */
 /** @var array<string, array<string>> $errors */
 /** @var \App\Http\Request $request */
-/** @var int $unreadMessages */
 /** @var int $totalCustomers */
 /** @var int $totalLeads */
 /** @var array $customersByStatus */
@@ -41,11 +40,6 @@ $this->extend('layout');
                         <h3><?= $totalLeads ?></h3>
                         <p>Total Leads</p>
                         <a href="/leads" class="metric-link">View All →</a>
-                    </div>
-                    <div class="metric-card">
-                        <h3><?= $unreadMessages ?></h3>
-                        <p>Unread Messages</p>
-                        <a href="/messages" class="metric-link">View All →</a>
                     </div>
                 </div>
             </div>
