@@ -11,6 +11,7 @@ use App\Repositories\LeadRepository;
 use App\Repositories\CustomerRepository;
 use App\Repositories\InteractionRepository;
 use App\Utils\ChangeTracker;
+use App\Enums\LeadStatus;
 
 /**
  * Controller for managing leads in the CRM system.
@@ -189,7 +190,44 @@ class LeadsController extends Controller
             return $response;
         }
 
-        // Create customer from lead data
+        // Check if customer already exists with this email
+        $existingCustomer = $this->customerRepository->findByEmail($lead->getEmail());
+
+        if ($existingCustomer) {
+            // Customer already exists, just update the lead status and redirect
+            $this->leadRepository->update(
+                $id,
+                $lead->getName(),
+                $lead->getEmail(),
+                $lead->getPhone(),
+                $lead->getCompany(),
+                $lead->getSource(),
+                LeadStatus::CONVERTED->value,
+                $lead->getNotes()
+            );
+
+            // Log conversion interaction on existing customer
+            $this->interactionRepository->createForCustomer(
+                $existingCustomer->getId(),
+                'note',
+                'Lead re-converted',
+                "{Lead #{$id}} converted to existing customer account",
+            );
+
+            // Log re-conversion interaction on the lead side
+            $this->interactionRepository->createForLead(
+                $id,
+                'note',
+                'Re-converted to existing customer',
+                "Lead re-converted to existing customer {Customer #{$existingCustomer->getId()}}",
+            );
+
+            $response->setFlash('success', 'Lead converted to existing customer: ' . $existingCustomer->getName());
+            $response->redirect('/customers/' . $existingCustomer->getId());
+            return $response;
+        }
+
+        // Create new customer from lead data
         $customer = $this->customerRepository->create(
             $lead->getName(),
             $lead->getEmail(),
