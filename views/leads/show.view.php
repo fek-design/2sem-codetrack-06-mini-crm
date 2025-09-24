@@ -4,6 +4,7 @@
 /** @var array $interactions */
 
 use App\Utils\TimezoneHelper;
+use App\Enums\LeadStatus;
 
 $this->extend('layout');
 ?>
@@ -15,7 +16,7 @@ $this->extend('layout');
         <div class="page-header-content">
             <h1 class="page-heading"><?= htmlspecialchars($lead->getName()) ?></h1>
             <div class="header-actions">
-                <?php if ($lead->getStatus() !== 'converted'): ?>
+                <?php if ($lead->getStatus() !== LeadStatus::CONVERTED->value): ?>
                     <form method="POST" action="/leads/<?= $lead->getId() ?>/convert" style="display: inline;">
                         <button type="submit" class="btn btn-success"
                                 onclick="return confirm('Convert this lead to a customer?')">Convert to Customer</button>

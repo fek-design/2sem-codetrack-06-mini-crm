@@ -15,15 +15,7 @@ enum CustomerStatus: string
     case ONBOARDING = 'onboarding';
 
     /**
-     * Get all customer status values
-     */
-    public static function values(): array
-    {
-        return array_column(self::cases(), 'value');
-    }
-
-    /**
-     * Get display name for the status
+     * Get the display name for the status
      */
     public function getDisplayName(): string
     {
@@ -36,26 +28,14 @@ enum CustomerStatus: string
     }
 
     /**
-     * Get CSS class for status badge
+     * Get all active customer statuses
      */
-    public function getCssClass(): string
+    public static function getActiveStatuses(): array
     {
-        return 'status-' . $this->value;
-    }
-
-    /**
-     * Check if status is active (customer is currently engaged)
-     */
-    public function isActive(): bool
-    {
-        return $this === self::ACTIVE || $this === self::VIP || $this === self::ONBOARDING;
-    }
-
-    /**
-     * Create from string value
-     */
-    public static function fromString(string $value): ?self
-    {
-        return self::tryFrom($value);
+        return [
+            self::ACTIVE,
+            self::VIP,
+            self::ONBOARDING,
+        ];
     }
 }

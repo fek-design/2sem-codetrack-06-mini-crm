@@ -3,6 +3,7 @@
 /** @var array $leads */
 
 use App\Utils\TimezoneHelper;
+use App\Enums\LeadStatus;
 
 $this->extend('layout');
 ?>
@@ -60,13 +61,13 @@ $this->extend('layout');
                                 </p>
                             <?php endif; ?>
                             <p class="lead-date">
-                                <strong>Added:</strong> <?= TimezoneHelper::formatForDisplay($lead->getCreatedAt(), 'M j, Y') ?>
+                                <strong>Added:</strong> <?= TimezoneHelper::formatDateForDisplay($lead->getCreatedAt()) ?>
                             </p>
                         </div>
                         <div class="lead-actions">
                             <a href="/leads/<?= $lead->getId() ?>" class="btn btn-sm btn-primary">View</a>
                             <a href="/leads/<?= $lead->getId() ?>/edit" class="btn btn-sm btn-secondary">Edit</a>
-                            <?php if ($lead->getStatus() !== 'converted'): ?>
+                            <?php if ($lead->getStatus() !== LeadStatus::CONVERTED->value): ?>
                                 <form method="POST" action="/leads/<?= $lead->getId() ?>/convert" style="display: inline;">
                                     <button type="submit" class="btn btn-sm btn-success"
                                             onclick="return confirm('Convert this lead to a customer?')">Convert</button>

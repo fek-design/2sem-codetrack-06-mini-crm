@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Utils;
 
+use App\Config;
 use DateTime;
 use DateTimeZone;
 
@@ -12,8 +13,15 @@ use DateTimeZone;
  */
 class TimezoneHelper
 {
-    private const APP_TIMEZONE = 'Europe/Copenhagen';
     private const UTC_TIMEZONE = 'UTC';
+
+    /**
+     * Get the application timezone from config
+     */
+    private static function getAppTimezone(): string
+    {
+        return Config::get('APP_TIMEZONE', 'Europe/Copenhagen');
+    }
 
     /**
      * Convert a local datetime string to UTC for database storage
@@ -28,10 +36,10 @@ class TimezoneHelper
 
             // Handle HTML5 datetime-local format (2025-09-20T12:00)
             if (strpos($localDateTime, 'T') !== false) {
-                $dt = new DateTime($localDateTime, new DateTimeZone(self::APP_TIMEZONE));
+                $dt = new DateTime($localDateTime, new DateTimeZone(self::getAppTimezone()));
             } else {
                 // Handle standard format assuming local timezone
-                $dt = new DateTime($localDateTime, new DateTimeZone(self::APP_TIMEZONE));
+                $dt = new DateTime($localDateTime, new DateTimeZone(self::getAppTimezone()));
             }
 
             // Convert to UTC
@@ -51,7 +59,7 @@ class TimezoneHelper
     {
         try {
             $dt = new DateTime($utcDateTime, new DateTimeZone(self::UTC_TIMEZONE));
-            $dt->setTimezone(new DateTimeZone(self::APP_TIMEZONE));
+            $dt->setTimezone(new DateTimeZone(self::getAppTimezone()));
             return $dt->format('Y-m-d H:i:s');
         } catch (\Exception $e) {
             return $utcDateTime; // Return original if conversion fails
@@ -59,7 +67,66 @@ class TimezoneHelper
     }
 
     /**
-     * Get current UTC datetime for database storage
+     * Format a datetime string for display using configured format
+     */
+    public static function formatForDisplay(string $utcDateTime, ?string $format = null): string
+    {
+        if (empty($utcDateTime)) {
+            return '';
+        }
+
+        try {
+            $dt = new DateTime($utcDateTime, new DateTimeZone(self::UTC_TIMEZONE));
+            $dt->setTimezone(new DateTimeZone(self::getAppTimezone()));
+
+            // Use provided format or default from config
+            $displayFormat = $format ?? Config::get('DISPLAY_DATETIME_FORMAT', 'M j, Y g:i A');
+            return $dt->format($displayFormat);
+        } catch (\Exception $e) {
+            return $utcDateTime; // Return original if formatting fails
+        }
+    }
+
+    /**
+     * Format a datetime string for display using date-only format
+     */
+    public static function formatDateForDisplay(string $utcDateTime): string
+    {
+        if (empty($utcDateTime)) {
+            return '';
+        }
+
+        try {
+            $dt = new DateTime($utcDateTime, new DateTimeZone(self::UTC_TIMEZONE));
+            $dt->setTimezone(new DateTimeZone(self::getAppTimezone()));
+
+            $displayFormat = Config::get('DISPLAY_DATE_FORMAT', 'M j, Y');
+            return $dt->format($displayFormat);
+        } catch (\Exception $e) {
+            return $utcDateTime;
+        }
+    }
+
+    /**
+     * Format a datetime string for HTML input fields
+     */
+    public static function formatForInput(string $utcDateTime): string
+    {
+        if (empty($utcDateTime)) {
+            return '';
+        }
+
+        try {
+            $dt = new DateTime($utcDateTime, new DateTimeZone(self::UTC_TIMEZONE));
+            $dt->setTimezone(new DateTimeZone(self::getAppTimezone()));
+            return $dt->format('Y-m-d\TH:i'); // HTML5 datetime-local format
+        } catch (\Exception $e) {
+            return '';
+        }
+    }
+
+    /**
+     * Get current UTC datetime
      */
     public static function nowUtc(): string
     {
@@ -67,55 +134,21 @@ class TimezoneHelper
     }
 
     /**
-     * Get current local datetime for display
+     * Get current local datetime
      */
     public static function nowLocal(): string
     {
-        return (new DateTime('now', new DateTimeZone(self::APP_TIMEZONE)))->format('Y-m-d H:i:s');
+        return (new DateTime('now', new DateTimeZone(self::getAppTimezone())))->format('Y-m-d H:i:s');
     }
 
     /**
-     * Format datetime for HTML datetime-local input (in local timezone)
-     */
-    public static function formatForInput(string $utcDateTime): string
-    {
-        try {
-            $dt = new DateTime($utcDateTime, new DateTimeZone(self::UTC_TIMEZONE));
-            $dt->setTimezone(new DateTimeZone(self::APP_TIMEZONE));
-            return $dt->format('Y-m-d\TH:i');
-        } catch (\Exception $e) {
-            return (new DateTime('now', new DateTimeZone(self::APP_TIMEZONE)))->format('Y-m-d\TH:i');
-        }
-    }
-
-    /**
-     * Format datetime for display (in local timezone)
-     */
-    public static function formatForDisplay(string $utcDateTime, string $format = 'M j, Y g:i A'): string
-    {
-        try {
-            $dt = new DateTime($utcDateTime, new DateTimeZone(self::UTC_TIMEZONE));
-            $dt->setTimezone(new DateTimeZone(self::APP_TIMEZONE));
-            return $dt->format($format);
-        } catch (\Exception $e) {
-            return $utcDateTime;
-        }
-    }
-
-    /**
-     * Check if datetime string appears to be in UTC format
+     * Check if a datetime string is already in UTC format
      */
     private static function isUtcFormat(string $datetime): bool
     {
-        // Simple check for standard UTC format
-        return preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $datetime) === 1;
-    }
-
-    /**
-     * Get the app timezone
-     */
-    public static function getAppTimezone(): string
-    {
-        return self::APP_TIMEZONE;
+        // Check for common UTC indicators
+        return str_ends_with($datetime, 'Z') ||
+               str_contains($datetime, '+00:00') ||
+               str_contains($datetime, 'UTC');
     }
 }

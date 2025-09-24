@@ -73,7 +73,7 @@ $this->extend('layout');
                                 </p>
                             <?php endif; ?>
                             <p class="customer-date">
-                                <strong>Added:</strong> <?= TimezoneHelper::formatForDisplay($customer->getCreatedAt(), 'M j, Y') ?>
+                                <strong>Added:</strong> <?= TimezoneHelper::formatDateForDisplay($customer->getCreatedAt()) ?>
                             </p>
                         </div>
                         <div class="customer-actions">

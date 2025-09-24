@@ -1,6 +1,6 @@
 {
-  "name": "madh-zealand/portfolio",
-  "description": "Basic portfolio website",
+  "name": "madh-zealand/mini-crm",
+  "description": "Mini CRM application",
   "type": "project",
   "autoload": {
     "psr-4": {
