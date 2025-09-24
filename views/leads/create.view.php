@@ -12,7 +12,7 @@ $this->extend('layout');
     <div class="container">
         <div class="page-header-content">
             <h1 class="page-heading">Add Lead</h1>
-            <a href="/admin/leads" class="btn btn-secondary">Back to Leads</a>
+            <a href="/leads" class="btn btn-secondary">Back to Leads</a>
         </div>
     </div>
 </section>
@@ -24,7 +24,7 @@ $this->extend('layout');
                 <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="/admin/leads" class="lead-form">
+            <form method="POST" action="/leads" class="lead-form">
                 <div class="form-group">
                     <label for="name">Name *</label>
                     <input type="text" name="name" id="name" required
@@ -70,7 +70,7 @@ $this->extend('layout');
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Add Lead</button>
-                    <a href="/admin/leads" class="btn btn-secondary">Cancel</a>
+                    <a href="/leads" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

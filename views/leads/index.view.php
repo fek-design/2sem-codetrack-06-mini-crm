@@ -13,7 +13,7 @@ $this->extend('layout');
     <div class="container">
         <div class="page-header-content">
             <h1 class="page-heading">Leads</h1>
-            <a href="/admin/leads/create" class="btn btn-primary">Add Lead</a>
+            <a href="/leads/create" class="btn btn-primary">Add Lead</a>
         </div>
     </div>
 </section>
@@ -24,7 +24,7 @@ $this->extend('layout');
             <div class="empty-state">
                 <h3>No leads found</h3>
                 <p>You haven't added any leads yet.</p>
-                <a href="/admin/leads/create" class="btn btn-primary">Add Your First Lead</a>
+                <a href="/leads/create" class="btn btn-primary">Add Your First Lead</a>
             </div>
         <?php else: ?>
             <div class="leads-grid">
@@ -32,7 +32,7 @@ $this->extend('layout');
                     <div class="lead-card">
                         <div class="lead-header">
                             <h3 class="lead-name">
-                                <a href="/admin/leads/<?= $lead->getId() ?>">
+                                <a href="/leads/<?= $lead->getId() ?>">
                                     <?= htmlspecialchars($lead->getName()) ?>
                                 </a>
                             </h3>
@@ -64,10 +64,10 @@ $this->extend('layout');
                             </p>
                         </div>
                         <div class="lead-actions">
-                            <a href="/admin/leads/<?= $lead->getId() ?>" class="btn btn-sm btn-primary">View</a>
-                            <a href="/admin/leads/<?= $lead->getId() ?>/edit" class="btn btn-sm btn-secondary">Edit</a>
+                            <a href="/leads/<?= $lead->getId() ?>" class="btn btn-sm btn-primary">View</a>
+                            <a href="/leads/<?= $lead->getId() ?>/edit" class="btn btn-sm btn-secondary">Edit</a>
                             <?php if ($lead->getStatus() !== 'converted'): ?>
-                                <form method="POST" action="/admin/leads/<?= $lead->getId() ?>/convert" style="display: inline;">
+                                <form method="POST" action="/leads/<?= $lead->getId() ?>/convert" style="display: inline;">
                                     <button type="submit" class="btn btn-sm btn-success"
                                             onclick="return confirm('Convert this lead to a customer?')">Convert</button>
                                 </form>

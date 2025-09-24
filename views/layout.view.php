@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php $this->section('title') ?> - My Portfolio</title>
+    <title><?php $this->section('title') ?> - MiniCRM</title>
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,36 +21,25 @@
     <header class="navigation-bar">
         <div class="container">
             <div class="header-content">
-                <nav class="main-nav">
-                    <ul>
-                        <li>
-                            <a href="/">
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/about">
-                                About
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/projects">
-                                Projects
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/contact">
-                                Contact
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <div class="app-title">
+                    <h1>MiniCRM</h1>
+                </div>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <nav class="user-nav">
                         <ul>
                             <li>
-                                <a href="/admin/dashboard">
+                                <a href="/dashboard">
                                     Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/customers">
+                                    Customers
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/leads">
+                                    Leads
                                 </a>
                             </li>
                             <li>
@@ -103,10 +92,7 @@
         <div class="footer-content">
             <p class="copyright">
                 &copy; <?= date('Y') ?>
-                My Portfolio. All rights reserved.
-            </p>
-            <p class="footer-links">
-                <a href="/login" class="admin-link">Login</a>
+                MiniCRM. All rights reserved.
             </p>
         </div>
     </footer>

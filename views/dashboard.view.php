@@ -35,17 +35,17 @@ $this->extend('layout');
                     <div class="metric-card">
                         <h3><?= $totalCustomers ?></h3>
                         <p>Total Customers</p>
-                        <a href="/admin/customers" class="metric-link">View All →</a>
+                        <a href="/customers" class="metric-link">View All →</a>
                     </div>
                     <div class="metric-card">
                         <h3><?= $totalLeads ?></h3>
                         <p>Total Leads</p>
-                        <a href="/admin/leads" class="metric-link">View All →</a>
+                        <a href="/leads" class="metric-link">View All →</a>
                     </div>
                     <div class="metric-card">
                         <h3><?= $unreadMessages ?></h3>
                         <p>Unread Messages</p>
-                        <a href="/admin/messages" class="metric-link">View All →</a>
+                        <a href="/messages" class="metric-link">View All →</a>
                     </div>
                 </div>
             </div>
@@ -53,19 +53,19 @@ $this->extend('layout');
             <div class="dashboard-card">
                 <h2 class="section-heading">Quick Actions</h2>
                 <div class="action-grid">
-                    <a href="/admin/customers/create" class="link-card">
+                    <a href="/customers/create" class="link-card">
                         <h3>Add Customer</h3>
                         <p>Create a new customer record</p>
                     </a>
-                    <a href="/admin/leads/create" class="link-card">
+                    <a href="/leads/create" class="link-card">
                         <h3>Add Lead</h3>
                         <p>Add a new potential customer</p>
                     </a>
-                    <a href="/admin/customers" class="link-card">
+                    <a href="/customers" class="link-card">
                         <h3>Manage Customers</h3>
                         <p>View and manage customer records</p>
                     </a>
-                    <a href="/admin/leads" class="link-card">
+                    <a href="/leads" class="link-card">
                         <h3>Manage Leads</h3>
                         <p>View and convert leads</p>
                     </a>

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers\Admin;
+namespace App\Controllers;
 
 use App\Controller;
 use App\Http\Request;
@@ -13,7 +13,7 @@ use App\Repositories\LeadRepository;
 use App\Repositories\InteractionRepository;
 
 /**
- * Handles the admin dashboard functionality.
+ * Handles the CRM dashboard functionality.
  * This controller is protected by authentication.
  */
 class DashboardController extends Controller
@@ -32,7 +32,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Show the admin dashboard.
+     * Show the CRM dashboard.
      */
     public function index(Request $request): Response
     {
@@ -50,7 +50,7 @@ class DashboardController extends Controller
         $recentInteractions = $this->interactions->getRecentInteractions(5);
 
         $response = new Response();
-        $response->setTemplate($this->template, 'admin/dashboard', [
+        $response->setTemplate($this->template, 'dashboard', [
             ...$this->pullFlash($response),
             'request' => $request,
             'unreadMessages' => $unreadMessages,

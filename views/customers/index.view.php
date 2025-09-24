@@ -14,7 +14,7 @@ $this->extend('layout');
     <div class="container">
         <div class="page-header-content">
             <h1 class="page-heading">Customers</h1>
-            <a href="/admin/customers/create" class="btn btn-primary">Add Customer</a>
+            <a href="/customers/create" class="btn btn-primary">Add Customer</a>
         </div>
     </div>
 </section>
@@ -28,7 +28,7 @@ $this->extend('layout');
                        placeholder="Search customers by name, email, or company..." class="search-input">
                 <button type="submit" class="btn btn-secondary">Search</button>
                 <?php if ($search): ?>
-                    <a href="/admin/customers" class="btn btn-outline">Clear</a>
+                    <a href="/customers" class="btn btn-outline">Clear</a>
                 <?php endif; ?>
             </form>
         </div>
@@ -41,7 +41,7 @@ $this->extend('layout');
                     <p>No customers match your search criteria.</p>
                 <?php else: ?>
                     <p>You haven't added any customers yet.</p>
-                    <a href="/admin/customers/create" class="btn btn-primary">Add Your First Customer</a>
+                    <a href="/customers/create" class="btn btn-primary">Add Your First Customer</a>
                 <?php endif; ?>
             </div>
         <?php else: ?>
@@ -50,7 +50,7 @@ $this->extend('layout');
                     <div class="customer-card">
                         <div class="customer-header">
                             <h3 class="customer-name">
-                                <a href="/admin/customers/<?= $customer->getId() ?>">
+                                <a href="/customers/<?= $customer->getId() ?>">
                                     <?= htmlspecialchars($customer->getName()) ?>
                                 </a>
                             </h3>
@@ -77,8 +77,8 @@ $this->extend('layout');
                             </p>
                         </div>
                         <div class="customer-actions">
-                            <a href="/admin/customers/<?= $customer->getId() ?>" class="btn btn-sm btn-primary">View</a>
-                            <a href="/admin/customers/<?= $customer->getId() ?>/edit" class="btn btn-sm btn-secondary">Edit</a>
+                            <a href="/customers/<?= $customer->getId() ?>" class="btn btn-sm btn-primary">View</a>
+                            <a href="/customers/<?= $customer->getId() ?>/edit" class="btn btn-sm btn-secondary">Edit</a>
                         </div>
                     </div>
                 <?php endforeach; ?>

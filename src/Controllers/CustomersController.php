@@ -51,7 +51,7 @@ class CustomersController extends Controller
 
         if (!$customer) {
             $response = new Response();
-            $response->redirect('/admin/customers');
+            $response->redirect('/customers');
             return $response;
         }
 
@@ -89,7 +89,7 @@ class CustomersController extends Controller
         if (empty($name) || empty($email)) {
             $this->flashErrors($response, ['general' => ['Name and email are required.']]);
             $this->flashOldInput($response, $request->getAll());
-            $response->redirect('/admin/customers/create');
+            $response->redirect('/customers/create');
             return $response;
         }
 
@@ -97,7 +97,7 @@ class CustomersController extends Controller
         if ($this->customerRepository->findByEmail($email)) {
             $this->flashErrors($response, ['general' => ['A customer with this email already exists.']]);
             $this->flashOldInput($response, $request->getAll());
-            $response->redirect('/admin/customers/create');
+            $response->redirect('/customers/create');
             return $response;
         }
 
@@ -111,7 +111,7 @@ class CustomersController extends Controller
             'Customer record created in CRM system'
         );
 
-        $response->redirect('/admin/customers/' . $customer->getId());
+        $response->redirect('/customers/' . $customer->getId());
         return $response;
     }
 
@@ -122,7 +122,7 @@ class CustomersController extends Controller
 
         if (!$customer) {
             $response = new Response();
-            $response->redirect('/admin/customers');
+            $response->redirect('/customers');
             return $response;
         }
 
@@ -143,7 +143,7 @@ class CustomersController extends Controller
         $response = new Response();
 
         if (!$customer) {
-            $response->redirect('/admin/customers');
+            $response->redirect('/customers');
             return $response;
         }
 
@@ -156,7 +156,7 @@ class CustomersController extends Controller
 
         if (empty($name) || empty($email)) {
             $this->flashErrors($response, ['general' => ['Name and email are required.']]);
-            $response->redirect('/admin/customers/' . $id . '/edit');
+            $response->redirect('/customers/' . $id . '/edit');
             return $response;
         }
 
@@ -182,7 +182,7 @@ class CustomersController extends Controller
             );
         }
 
-        $response->redirect('/admin/customers/' . $id);
+        $response->redirect('/customers/' . $id);
         return $response;
     }
 
@@ -194,7 +194,7 @@ class CustomersController extends Controller
         $response = new Response();
 
         if (!$customer) {
-            $response->redirect('/admin/customers');
+            $response->redirect('/customers');
             return $response;
         }
 
@@ -205,7 +205,7 @@ class CustomersController extends Controller
 
         if (empty($type) || empty($subject)) {
             $this->flashErrors($response, ['general' => ['Type and subject are required.']]);
-            $response->redirect('/admin/customers/' . $customerId);
+            $response->redirect('/customers/' . $customerId);
             return $response;
         }
 
@@ -217,7 +217,7 @@ class CustomersController extends Controller
             $interactionDate ?: null
         );
 
-        $response->redirect('/admin/customers/' . $customerId);
+        $response->redirect('/customers/' . $customerId);
         return $response;
     }
 }

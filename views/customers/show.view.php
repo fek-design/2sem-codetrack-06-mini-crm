@@ -15,8 +15,8 @@ $this->extend('layout');
         <div class="page-header-content">
             <h1 class="page-heading"><?= htmlspecialchars($customer->getName()) ?></h1>
             <div class="header-actions">
-                <a href="/admin/customers/<?= $customer->getId() ?>/edit" class="btn btn-primary">Edit Customer</a>
-                <a href="/admin/customers" class="btn btn-secondary">Back to Customers</a>
+                <a href="/customers/<?= $customer->getId() ?>/edit" class="btn btn-primary">Edit Customer</a>
+                <a href="/customers" class="btn btn-secondary">Back to Customers</a>
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@ $this->extend('layout');
             <!-- Add Interaction Form -->
             <div class="interaction-form-card">
                 <h2>Add Interaction</h2>
-                <form method="POST" action="/admin/customers/<?= $customer->getId() ?>/interactions" class="interaction-form">
+                <form method="POST" action="/customers/<?= $customer->getId() ?>/interactions" class="interaction-form">
                     <div class="form-group">
                         <label for="type">Type:</label>
                         <select name="type" id="type" required>

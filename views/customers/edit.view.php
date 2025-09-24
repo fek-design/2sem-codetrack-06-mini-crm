@@ -15,8 +15,8 @@ $this->extend('layout');
         <div class="page-header-content">
             <h1 class="page-heading">Edit Customer</h1>
             <div class="header-actions">
-                <a href="/admin/customers/<?= $customer->getId() ?>" class="btn btn-secondary">Back to Customer</a>
-                <a href="/admin/customers" class="btn btn-outline">All Customers</a>
+                <a href="/customers/<?= $customer->getId() ?>" class="btn btn-secondary">Back to Customer</a>
+                <a href="/customers" class="btn btn-outline">All Customers</a>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@ $this->extend('layout');
                 <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="/admin/customers/<?= $customer->getId() ?>" class="customer-form">
+            <form method="POST" action="/customers/<?= $customer->getId() ?>" class="customer-form">
                 <div class="form-group">
                     <label for="name">Name *</label>
                     <input type="text" name="name" id="name" required
@@ -72,7 +72,7 @@ $this->extend('layout');
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Update Customer</button>
-                    <a href="/admin/customers/<?= $customer->getId() ?>" class="btn btn-secondary">Cancel</a>
+                    <a href="/customers/<?= $customer->getId() ?>" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

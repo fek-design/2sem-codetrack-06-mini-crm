@@ -12,7 +12,7 @@ use App\Http\Response;
 use App\Security\RateLimiter;
 
 /**
- * Handles admin login functionality.
+ * Handles CRM login functionality.
  */
 class LoginController extends Controller
 {
@@ -35,7 +35,7 @@ class LoginController extends Controller
         // If already logged in, redirect to dashboard
         if (isset($_SESSION['user_id'])) {
             $response = new Response();
-            $response->redirect('/admin/dashboard');
+            $response->redirect('/dashboard');
             return $response;
         }
 
@@ -58,7 +58,7 @@ class LoginController extends Controller
         // Check CSRF token
         if (!$request->validateCsrfToken()) {
             return $this->handleInvalidRequest(
-                $response, 
+                $response,
                 'Invalid security token',
                 $request->getAll(),
             );
@@ -101,7 +101,7 @@ class LoginController extends Controller
         $_SESSION['user_email'] = $credentials->email;
 
         $this->flashSuccess($response, $credentials->email);
-        $response->redirect('/admin/dashboard');
+        $response->redirect('/dashboard');
         return $response;
     }
 
@@ -115,7 +115,7 @@ class LoginController extends Controller
         // Check CSRF token
         if (!$request->validateCsrfToken()) {
             return $this->handleInvalidRequest(
-                $response, 
+                $response,
                 'Invalid security token',
                 $request->getAll(),
             );

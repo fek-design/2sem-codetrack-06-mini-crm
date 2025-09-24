@@ -16,13 +16,13 @@ $this->extend('layout');
             <h1 class="page-heading"><?= htmlspecialchars($lead->getName()) ?></h1>
             <div class="header-actions">
                 <?php if ($lead->getStatus() !== 'converted'): ?>
-                    <form method="POST" action="/admin/leads/<?= $lead->getId() ?>/convert" style="display: inline;">
+                    <form method="POST" action="/leads/<?= $lead->getId() ?>/convert" style="display: inline;">
                         <button type="submit" class="btn btn-success"
                                 onclick="return confirm('Convert this lead to a customer?')">Convert to Customer</button>
                     </form>
                 <?php endif; ?>
-                <a href="/admin/leads/<?= $lead->getId() ?>/edit" class="btn btn-primary">Edit Lead</a>
-                <a href="/admin/leads" class="btn btn-secondary">Back to Leads</a>
+                <a href="/leads/<?= $lead->getId() ?>/edit" class="btn btn-primary">Edit Lead</a>
+                <a href="/leads" class="btn btn-secondary">Back to Leads</a>
             </div>
         </div>
     </div>
@@ -75,7 +75,7 @@ $this->extend('layout');
             <!-- Add Interaction Form -->
             <div class="interaction-form-card">
                 <h2>Add Interaction</h2>
-                <form method="POST" action="/admin/leads/<?= $lead->getId() ?>/interactions" class="interaction-form">
+                <form method="POST" action="/leads/<?= $lead->getId() ?>/interactions" class="interaction-form">
                     <div class="form-group">
                         <label for="type">Type:</label>
                         <select name="type" id="type" required>

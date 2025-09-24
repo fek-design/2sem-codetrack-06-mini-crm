@@ -12,7 +12,7 @@ $this->extend('layout');
     <div class="container">
         <div class="page-header-content">
             <h1 class="page-heading">Add Customer</h1>
-            <a href="/admin/customers" class="btn btn-secondary">Back to Customers</a>
+            <a href="/customers" class="btn btn-secondary">Back to Customers</a>
         </div>
     </div>
 </section>
@@ -24,7 +24,7 @@ $this->extend('layout');
                 <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="/admin/customers" class="customer-form">
+            <form method="POST" action="/customers" class="customer-form">
                 <div class="form-group">
                     <label for="name">Name *</label>
                     <input type="text" name="name" id="name" required
@@ -55,8 +55,8 @@ $this->extend('layout');
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Add Customer</button>
-                    <a href="/admin/customers" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Create Customer</button>
+                    <a href="/customers" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

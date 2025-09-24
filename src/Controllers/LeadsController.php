@@ -47,7 +47,7 @@ class LeadsController extends Controller
 
         if (!$lead) {
             $response = new Response();
-            $response->redirect('/admin/leads');
+            $response->redirect('/leads');
             return $response;
         }
 
@@ -86,7 +86,7 @@ class LeadsController extends Controller
         if (empty($name) || empty($email)) {
             $this->flashErrors($response, ['general' => ['Name and email are required.']]);
             $this->flashOldInput($response, $request->getAll());
-            $response->redirect('/admin/leads/create');
+            $response->redirect('/leads/create');
             return $response;
         }
 
@@ -100,7 +100,7 @@ class LeadsController extends Controller
             'Lead record created in CRM system from source: ' . $source
         );
 
-        $response->redirect('/admin/leads/' . $lead->getId());
+        $response->redirect('/leads/' . $lead->getId());
         return $response;
     }
 
@@ -111,7 +111,7 @@ class LeadsController extends Controller
 
         if (!$lead) {
             $response = new Response();
-            $response->redirect('/admin/leads');
+            $response->redirect('/leads');
             return $response;
         }
 
@@ -132,7 +132,7 @@ class LeadsController extends Controller
         $response = new Response();
 
         if (!$lead) {
-            $response->redirect('/admin/leads');
+            $response->redirect('/leads');
             return $response;
         }
 
@@ -146,7 +146,7 @@ class LeadsController extends Controller
 
         if (empty($name) || empty($email)) {
             $this->flashErrors($response, ['general' => ['Name and email are required.']]);
-            $response->redirect('/admin/leads/' . $id . '/edit');
+            $response->redirect('/leads/' . $id . '/edit');
             return $response;
         }
 
@@ -173,7 +173,7 @@ class LeadsController extends Controller
             );
         }
 
-        $response->redirect('/admin/leads/' . $id);
+        $response->redirect('/leads/' . $id);
         return $response;
     }
 
@@ -185,7 +185,7 @@ class LeadsController extends Controller
         $response = new Response();
 
         if (!$lead) {
-            $response->redirect('/admin/leads');
+            $response->redirect('/leads');
             return $response;
         }
 
@@ -238,7 +238,7 @@ class LeadsController extends Controller
             $lead->getNotes()
         );
 
-        $response->redirect('/admin/customers/' . $customer->getId());
+        $response->redirect('/customers/' . $customer->getId());
         return $response;
     }
 
@@ -250,7 +250,7 @@ class LeadsController extends Controller
         $response = new Response();
 
         if (!$lead) {
-            $response->redirect('/admin/leads');
+            $response->redirect('/leads');
             return $response;
         }
 
@@ -261,7 +261,7 @@ class LeadsController extends Controller
 
         if (empty($type) || empty($subject)) {
             $this->flashErrors($response, ['general' => ['Type and subject are required.']]);
-            $response->redirect('/admin/leads/' . $leadId);
+            $response->redirect('/leads/' . $leadId);
             return $response;
         }
 
@@ -273,7 +273,7 @@ class LeadsController extends Controller
             $interactionDate ?: null
         );
 
-        $response->redirect('/admin/leads/' . $leadId);
+        $response->redirect('/leads/' . $leadId);
         return $response;
     }
 }

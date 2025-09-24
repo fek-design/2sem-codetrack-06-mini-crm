@@ -1,6 +1,6 @@
 /* ===== COMPONENTS ===== */
 /* Buttons */
-.button, .btn, .btn-view-project {
+.button, .btn {
     display: inline-block;
     background-color: var(--color-primary);
     color: white;
@@ -14,9 +14,29 @@
     text-align: center;
 }
 
-.button:hover, .btn:hover, .btn-view-project:hover {
+.button:hover, .btn:hover {
     background-color: var(--color-primary-dark);
     text-decoration: none;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--color-text-light);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-text);
+    color: white;
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: var(--color-danger-dark);
     color: white;
 }
 
@@ -36,7 +56,7 @@
     border: 1px solid var(--color-success);
 }
 
-.alert-danger {
+.alert-danger, .alert-error {
     background: color-mix(in srgb, var(--color-danger) 15%, white);
     border: 1px solid var(--color-danger);
 }
@@ -75,7 +95,8 @@ form {
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
@@ -85,7 +106,8 @@ form {
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
     outline: none;
     border-color: var(--color-primary);
 }
@@ -97,12 +119,26 @@ form {
 }
 
 input.has-error,
-textarea.has-error {
+textarea.has-error,
+select.has-error {
     border-color: #e74c3c;
     background-color: rgba(231, 76, 60, 0.05);
 }
 
 input.has-error:focus,
-textarea.has-error:focus {
+textarea.has-error:focus,
+select.has-error:focus {
     box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.25);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: flex-start;
+    margin-top: var(--space-md);
+}
+
+.form-actions .btn {
+    margin-bottom: 0;
 }
