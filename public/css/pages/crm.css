@@ -227,7 +227,8 @@
 
 .status-active { background: #c6f6d5; color: #22543d; }
 .status-inactive { background: #fed7d7; color: #742a2a; }
-.status-prospect { background: #feebc8; color: #7c2d12; }
+.status-vip { background: #fde68a; color: #92400e; }
+.status-onboarding { background: #bfdbfe; color: #1e40af; }
 .status-new { background: #e0e7ff; color: #3730a3; }
 .status-contacted { background: #dbeafe; color: #1e40af; }
 .status-qualified { background: #d1fae5; color: #065f46; }
@@ -501,4 +502,47 @@
     .customer-actions, .lead-actions {
         justify-content: flex-start;
     }
+}
+
+/* CRM Entity Links */
+.entity-link {
+    display: inline-block;
+    padding: 2px 6px;
+    margin: 0 2px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9em;
+    transition: all 0.2s ease;
+    border: 1px solid;
+}
+
+.entity-link:hover {
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.lead-link {
+    background-color: #e0f2fe;
+    color: #0277bd;
+    border-color: #0277bd;
+}
+
+.lead-link:hover {
+    background-color: #b3e5fc;
+    color: #01579b;
+    border-color: #01579b;
+}
+
+.customer-link {
+    background-color: #e8f5e8;
+    color: #2e7d32;
+    border-color: #2e7d32;
+}
+
+.customer-link:hover {
+    background-color: #c8e6c9;
+    color: #1b5e20;
+    border-color: #1b5e20;
 }

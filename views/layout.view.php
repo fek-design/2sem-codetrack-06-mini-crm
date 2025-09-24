@@ -110,5 +110,8 @@
             </p>
         </div>
     </footer>
+
+    <!-- CRM Entity Link Converter -->
+    <script src="/js/crm-links.js"></script>
 </body>
 </html>

@@ -10,6 +10,7 @@ use App\Http\Response;
 use App\Repositories\LeadRepository;
 use App\Repositories\CustomerRepository;
 use App\Repositories\InteractionRepository;
+use App\Utils\ChangeTracker;
 
 /**
  * Controller for managing leads in the CRM system.
@@ -149,15 +150,26 @@ class LeadsController extends Controller
             return $response;
         }
 
+        // Track changes for interaction log using ChangeTracker
+        $changeTracker = ChangeTracker::track([
+            'Name' => [$lead->getName(), $name],
+            'Email' => [$lead->getEmail(), $email],
+            'Phone' => [$lead->getPhone(), $phone],
+            'Company' => [$lead->getCompany(), $company],
+            'Source' => [$lead->getSource(), $source],
+            'Status' => [$lead->getStatus(), $status],
+            'Notes' => [$lead->getNotes(), $notes],
+        ]);
+
         $success = $this->leadRepository->update($id, $name, $email, $phone, $company, $source, $status, $notes);
 
-        if ($success) {
-            // Log update interaction
+        if ($success && $changeTracker->hasChanges()) {
+            // Log detailed update interaction
             $this->interactionRepository->createForLead(
                 $id,
                 'note',
                 'Lead updated',
-                'Lead information was updated'
+                $changeTracker->getChangeDescription('Lead')
             );
         }
 
@@ -203,7 +215,15 @@ class LeadsController extends Controller
             $customer->getId(),
             'note',
             'Converted from lead',
-            'Customer converted from lead #' . $id
+            "Customer converted from {Lead #{$id}}",
+        );
+
+        // Log conversion on lead side with link to customer
+        $this->interactionRepository->createForLead(
+            $id,
+            'note',
+            'Converted to customer',
+            "Lead converted to customer {Customer #{$customer->getId()}}",
         );
 
         // Update lead status

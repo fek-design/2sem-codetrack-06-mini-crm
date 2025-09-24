@@ -3,6 +3,8 @@
 /** @var \App\Models\Customer $customer */
 /** @var string|null $error */
 
+use App\Enums\CustomerStatus;
+
 $this->extend('layout');
 ?>
 
@@ -55,9 +57,11 @@ $this->extend('layout');
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select name="status" id="status">
-                        <option value="active" <?= $customer->getStatus() === 'active' ? 'selected' : '' ?>>Active</option>
-                        <option value="inactive" <?= $customer->getStatus() === 'inactive' ? 'selected' : '' ?>>Inactive</option>
-                        <option value="prospect" <?= $customer->getStatus() === 'prospect' ? 'selected' : '' ?>>Prospect</option>
+                        <?php foreach (CustomerStatus::cases() as $status): ?>
+                            <option value="<?= $status->value ?>" <?= $customer->getStatus() === $status->value ? 'selected' : '' ?>>
+                                <?= $status->getDisplayName() ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 

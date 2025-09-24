@@ -3,6 +3,8 @@
 /** @var \App\Models\Lead $lead */
 /** @var string|null $error */
 
+use App\Enums\LeadStatus;
+
 $this->extend('layout');
 ?>
 
@@ -69,11 +71,11 @@ $this->extend('layout');
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select name="status" id="status">
-                        <option value="new" <?= $lead->getStatus() === 'new' ? 'selected' : '' ?>>New</option>
-                        <option value="contacted" <?= $lead->getStatus() === 'contacted' ? 'selected' : '' ?>>Contacted</option>
-                        <option value="qualified" <?= $lead->getStatus() === 'qualified' ? 'selected' : '' ?>>Qualified</option>
-                        <option value="unqualified" <?= $lead->getStatus() === 'unqualified' ? 'selected' : '' ?>>Unqualified</option>
-                        <option value="converted" <?= $lead->getStatus() === 'converted' ? 'selected' : '' ?>>Converted</option>
+                        <?php foreach (LeadStatus::cases() as $status): ?>
+                            <option value="<?= $status->value ?>" <?= $lead->getStatus() === $status->value ? 'selected' : '' ?>>
+                                <?= $status->getDisplayName() ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 

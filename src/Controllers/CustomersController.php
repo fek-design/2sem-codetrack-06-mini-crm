@@ -9,6 +9,7 @@ use App\Http\Request;
 use App\Http\Response;
 use App\Repositories\CustomerRepository;
 use App\Repositories\InteractionRepository;
+use App\Utils\ChangeTracker;
 
 /**
  * Controller for managing customers in the CRM system.
@@ -159,15 +160,25 @@ class CustomersController extends Controller
             return $response;
         }
 
+        // Track changes for interaction log using ChangeTracker
+        $changeTracker = ChangeTracker::track([
+            'Name' => [$customer->getName(), $name],
+            'Email' => [$customer->getEmail(), $email],
+            'Phone' => [$customer->getPhone(), $phone],
+            'Company' => [$customer->getCompany(), $company],
+            'Status' => [$customer->getStatus(), $status],
+            'Notes' => [$customer->getNotes(), $notes],
+        ]);
+
         $success = $this->customerRepository->update($id, $name, $email, $phone, $company, $status, $notes);
 
-        if ($success) {
-            // Log update interaction
+        if ($success && $changeTracker->hasChanges()) {
+            // Log detailed update interaction
             $this->interactionRepository->createForCustomer(
                 $id,
                 'note',
                 'Customer updated',
-                'Customer information was updated'
+                $changeTracker->getChangeDescription('Customer')
             );
         }
 
