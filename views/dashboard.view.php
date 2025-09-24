@@ -5,6 +5,11 @@
 /** @var \App\Http\Request $request */
 /** @var int $totalCustomers */
 /** @var int $totalLeads */
+/** @var int $activeCustomers */
+/** @var int $inactiveCustomers */
+/** @var int $activeLeads */
+/** @var int $unqualifiedLeads */
+/** @var int $convertedLeads */
 /** @var array $customersByStatus */
 /** @var array $leadsByStatus */
 /** @var array $recentInteractions */
@@ -34,10 +39,14 @@ $this->extend('layout');
                     <div class="metric-card">
                         <h3><?= $activeCustomers ?></h3>
                         <p>Active Customers</p>
-                        <?php if ($inactiveCustomers > 0): ?>
-                            <small class="inactive-count"><?= $inactiveCustomers ?> inactive</small>
-                        <?php endif; ?>
-                        <a href="/customers" class="metric-link">View All →</a>
+                        <div class="customer-subcounts">
+                            <?php if ($inactiveCustomers > 0): ?>
+                                <small class="inactive-count"><?= $inactiveCustomers ?> inactive</small>
+                            <?php endif; ?>
+                        </div>
+                        <div class="metric-actions">
+                            <a href="/customers" class="metric-link">View All →</a>
+                        </div>
                     </div>
                     <div class="metric-card">
                         <h3><?= $activeLeads ?></h3>
@@ -48,9 +57,11 @@ $this->extend('layout');
                             <?php endif; ?>
                             <?php if ($convertedLeads > 0): ?>
                                 <small class="converted-count"><?= $convertedLeads ?> converted</small>
-                            <?php endif; ?>
+                                    <?php endif; ?>
                         </div>
-                        <a href="/leads" class="metric-link">View All →</a>
+                        <div class="metric-actions">
+                            <a href="/leads" class="metric-link">View All →</a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -101,19 +101,29 @@
     background: #f8fafc;
     border-radius: 6px;
     border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    min-height: 120px;
+    gap: 0.5rem;
 }
 
 .metric-card h3 {
     font-size: 2rem;
     font-weight: bold;
     color: #2d3748;
-    margin: 0 0 0.5rem 0;
+    margin: 0;
 }
 
 .metric-card p {
     color: #718096;
-    margin: 0 0 0.5rem 0;
+    margin: 0;
     font-size: 0.9rem;
+}
+
+.metric-actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .metric-link {
@@ -148,11 +158,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.125rem;
-    margin-top: 0.25rem;
-}
-
-.lead-subcounts small {
-    font-size: 0.7rem;
 }
 
 /* Action Grid Styles */

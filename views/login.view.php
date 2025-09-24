@@ -1,6 +1,5 @@
 <?php
 /** @var \App\Template $this */
-/** @var string|null $success */
 /** @var array<string, array<string>> $errors */
 /** @var array<string, string> $old */
 /** @var \App\Http\Request $request */
