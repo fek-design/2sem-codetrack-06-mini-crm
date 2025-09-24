@@ -32,13 +32,24 @@ $this->extend('layout');
                 <h2 class="section-heading">CRM Overview</h2>
                 <div class="metrics-grid">
                     <div class="metric-card">
-                        <h3><?= $totalCustomers ?></h3>
-                        <p>Total Customers</p>
+                        <h3><?= $activeCustomers ?></h3>
+                        <p>Active Customers</p>
+                        <?php if ($inactiveCustomers > 0): ?>
+                            <small class="inactive-count"><?= $inactiveCustomers ?> inactive</small>
+                        <?php endif; ?>
                         <a href="/customers" class="metric-link">View All →</a>
                     </div>
                     <div class="metric-card">
-                        <h3><?= $totalLeads ?></h3>
-                        <p>Total Leads</p>
+                        <h3><?= $activeLeads ?></h3>
+                        <p>Active Leads</p>
+                        <div class="lead-subcounts">
+                            <?php if ($unqualifiedLeads > 0): ?>
+                                <small class="unqualified-count"><?= $unqualifiedLeads ?> unqualified</small>
+                            <?php endif; ?>
+                            <?php if ($convertedLeads > 0): ?>
+                                <small class="converted-count"><?= $convertedLeads ?> converted</small>
+                            <?php endif; ?>
+                        </div>
                         <a href="/leads" class="metric-link">View All →</a>
                     </div>
                 </div>

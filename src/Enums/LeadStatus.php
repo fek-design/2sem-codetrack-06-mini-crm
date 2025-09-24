@@ -30,7 +30,7 @@ enum LeadStatus: string
     }
 
     /**
-     * Get all active statuses (excluding converted)
+     * Get all active statuses (excluding unqualified and converted)
      */
     public static function getActiveStatuses(): array
     {
@@ -38,7 +38,33 @@ enum LeadStatus: string
             self::NEW,
             self::CONTACTED,
             self::QUALIFIED,
-            self::UNQUALIFIED,
         ];
+    }
+
+    /**
+     * Get all inactive statuses (unqualified and converted)
+     */
+    public static function getInactiveStatuses(): array
+    {
+        return [
+            self::UNQUALIFIED,
+            self::CONVERTED,
+        ];
+    }
+
+    /**
+     * Check if this status is considered active
+     */
+    public function isActive(): bool
+    {
+        return in_array($this, self::getActiveStatuses());
+    }
+
+    /**
+     * Check if this status is considered inactive
+     */
+    public function isInactive(): bool
+    {
+        return in_array($this, self::getInactiveStatuses());
     }
 }

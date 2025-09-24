@@ -10,6 +10,8 @@ use App\Http\Response;
 use App\Repositories\CustomerRepository;
 use App\Repositories\LeadRepository;
 use App\Repositories\InteractionRepository;
+use App\Enums\LeadStatus;
+use App\Enums\CustomerStatus;
 
 /**
  * Handles the CRM dashboard functionality.
@@ -37,19 +39,41 @@ class DashboardController extends Controller
             return $this->redirectToLoginWithError();
         }
 
-        // CRM metrics
-        $totalCustomers = count($this->customers->findAll());
-        $totalLeads = count($this->leads->findAll());
+        // Get all status counts from repositories
         $customersByStatus = $this->customers->countByStatus();
         $leadsByStatus = $this->leads->countByStatus();
+
+        // Calculate active/inactive counts using enum groupings
+        $activeCustomers = 0;
+        foreach (CustomerStatus::getActiveStatuses() as $status) {
+            $activeCustomers += $customersByStatus[$status->value] ?? 0;
+        }
+
+        $inactiveCustomers = 0;
+        foreach (CustomerStatus::getInactiveStatuses() as $status) {
+            $inactiveCustomers += $customersByStatus[$status->value] ?? 0;
+        }
+
+        $activeLeads = 0;
+        foreach (LeadStatus::getActiveStatuses() as $status) {
+            $activeLeads += $leadsByStatus[$status->value] ?? 0;
+        }
+
+        // Get specific lead counts using enum values
+        $unqualifiedLeads = $leadsByStatus[LeadStatus::UNQUALIFIED->value] ?? 0;
+        $convertedLeads = $leadsByStatus[LeadStatus::CONVERTED->value] ?? 0;
+
         $recentInteractions = $this->interactions->getRecentInteractions(5);
 
         $response = new Response();
         $response->setTemplate($this->template, 'dashboard', [
             ...$this->pullFlash($response),
             'request' => $request,
-            'totalCustomers' => $totalCustomers,
-            'totalLeads' => $totalLeads,
+            'activeCustomers' => $activeCustomers,
+            'activeLeads' => $activeLeads,
+            'inactiveCustomers' => $inactiveCustomers,
+            'unqualifiedLeads' => $unqualifiedLeads,
+            'convertedLeads' => $convertedLeads,
             'customersByStatus' => $customersByStatus,
             'leadsByStatus' => $leadsByStatus,
             'recentInteractions' => $recentInteractions,

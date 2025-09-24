@@ -127,6 +127,34 @@
     text-decoration: underline;
 }
 
+/* Metric card subcounts */
+.inactive-count, .unqualified-count, .converted-count {
+    display: block;
+    font-size: 0.75rem;
+    color: #718096;
+    margin-top: 0.25rem;
+    opacity: 0.8;
+}
+
+.unqualified-count {
+    color: #d69e2e;
+}
+
+.converted-count {
+    color: #38a169;
+}
+
+.lead-subcounts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin-top: 0.25rem;
+}
+
+.lead-subcounts small {
+    font-size: 0.7rem;
+}
+
 /* Action Grid Styles */
 .action-grid {
     display: grid;

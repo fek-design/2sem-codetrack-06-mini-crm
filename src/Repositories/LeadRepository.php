@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Database\Database;
+use App\Enums\LeadStatus;
 use App\Models\Lead;
 use App\Utils\TimezoneHelper;
 use PDO;
