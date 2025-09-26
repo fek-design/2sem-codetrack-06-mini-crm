@@ -5,32 +5,18 @@ declare(strict_types=1);
 namespace App\Enums;
 
 /**
- * Lead status enumeration
+ * Enum representing the possible statuses for leads in the CRM system.
  */
 enum LeadStatus: string
 {
     case NEW = 'new';
     case CONTACTED = 'contacted';
     case QUALIFIED = 'qualified';
-    case UNQUALIFIED = 'unqualified';
     case CONVERTED = 'converted';
+    case LOST = 'lost';
 
     /**
-     * Get the display name for the status
-     */
-    public function getDisplayName(): string
-    {
-        return match($this) {
-            self::NEW => 'New',
-            self::CONTACTED => 'Contacted',
-            self::QUALIFIED => 'Qualified',
-            self::UNQUALIFIED => 'Unqualified',
-            self::CONVERTED => 'Converted',
-        };
-    }
-
-    /**
-     * Get all active statuses (excluding unqualified and converted)
+     * Get all active lead statuses.
      */
     public static function getActiveStatuses(): array
     {
@@ -42,29 +28,27 @@ enum LeadStatus: string
     }
 
     /**
-     * Get all inactive statuses (unqualified and converted)
+     * Get all inactive lead statuses.
      */
     public static function getInactiveStatuses(): array
     {
         return [
-            self::UNQUALIFIED,
             self::CONVERTED,
+            self::LOST,
         ];
     }
 
     /**
-     * Check if this status is considered active
+     * Get a human-readable label for the status.
      */
-    public function isActive(): bool
+    public function getLabel(): string
     {
-        return in_array($this, self::getActiveStatuses());
-    }
-
-    /**
-     * Check if this status is considered inactive
-     */
-    public function isInactive(): bool
-    {
-        return in_array($this, self::getInactiveStatuses());
+        return match ($this) {
+            self::NEW => 'New',
+            self::CONTACTED => 'Contacted',
+            self::QUALIFIED => 'Qualified',
+            self::CONVERTED => 'Converted',
+            self::LOST => 'Lost',
+        };
     }
 }

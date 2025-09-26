@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Controller;
+use App\Enums\CustomerStatus;
 use App\Http\Request;
 use App\Http\Response;
 use App\Repositories\CustomerRepository;
@@ -151,7 +152,7 @@ class CustomersController extends Controller
         $email = $request->getInput('email', '');
         $phone = $request->getInput('phone', '');
         $company = $request->getInput('company', '');
-        $status = $request->getInput('status', 'active');
+        $status = CustomerStatus::from($request->getInput('status', 'active'));
         $notes = $request->getInput('notes', '');
 
         if (empty($name) || empty($email)) {
@@ -162,12 +163,12 @@ class CustomersController extends Controller
 
         // Track changes for interaction log using ChangeTracker
         $changeTracker = ChangeTracker::track([
-            'Name' => [$customer->getName(), $name],
-            'Email' => [$customer->getEmail(), $email],
-            'Phone' => [$customer->getPhone(), $phone],
-            'Company' => [$customer->getCompany(), $company],
-            'Status' => [$customer->getStatus(), $status],
-            'Notes' => [$customer->getNotes(), $notes],
+            'Name' => [$customer->name, $name],
+            'Email' => [$customer->email, $email],
+            'Phone' => [$customer->phone, $phone],
+            'Company' => [$customer->company, $company],
+            'Status' => [$customer->status->value, $status->value],
+            'Notes' => [$customer->notes, $notes],
         ]);
 
         $success = $this->customerRepository->update($id, $name, $email, $phone, $company, $status, $notes);

@@ -65,7 +65,9 @@ $this->extend('layout');
             <!-- Add Interaction Form -->
             <div class="interaction-form-card">
                 <h2>Add Interaction</h2>
-                <form method="POST" action="/customers/<?= $customer->getId() ?>/interactions" class="interaction-form form-spacing">
+                <form method="POST" action="/customers/<?= $customer->id ?>/interactions" class="interaction-form form-spacing">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($request->getCsrfToken()) ?>">
+
                     <div class="form-group">
                         <label for="type">Type:</label>
                         <select name="type" id="type" required>
@@ -86,7 +88,7 @@ $this->extend('layout');
                     </div>
                     <div class="form-group">
                         <label for="interaction_date">Date:</label>
-                        <input type="datetime-local" name="interaction_date" id="interaction_date" value="<?= TimezoneHelper::formatForInput(TimezoneHelper::nowUtc()) ?>">
+                        <input type="datetime-local" name="interaction_date" id="interaction_date" value="<?= date('Y-m-d\TH:i') ?>">
                     </div>
                     <button type="submit" class="btn btn-primary">Add Interaction</button>
                 </form>
@@ -103,13 +105,13 @@ $this->extend('layout');
                     <?php foreach ($interactions as $interaction): ?>
                         <div class="interaction-item">
                             <div class="interaction-header">
-                                <strong><?= htmlspecialchars($interaction->getSubject()) ?></strong>
-                                <span class="interaction-type">[<?= ucfirst($interaction->getType()) ?>]</span>
-                                <span class="interaction-date"><?= TimezoneHelper::formatForDisplay($interaction->getInteractionDate()) ?></span>
+                                <strong><?= htmlspecialchars($interaction->subject) ?></strong>
+                                <span class="interaction-type">[<?= ucfirst($interaction->type) ?>]</span>
+                                <span class="interaction-date"><?= TimezoneHelper::formatForDisplay($interaction->interaction_date) ?></span>
                             </div>
-                            <?php if ($interaction->getDescription()): ?>
+                            <?php if ($interaction->description): ?>
                                 <div class="interaction-description">
-                                    <?= nl2br(htmlspecialchars($interaction->getDescription())) ?>
+                                    <?= nl2br(htmlspecialchars($interaction->description)) ?>
                                 </div>
                             <?php endif; ?>
                         </div>

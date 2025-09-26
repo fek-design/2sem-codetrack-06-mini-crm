@@ -50,35 +50,35 @@ $this->extend('layout');
                     <div class="customer-card">
                         <div class="customer-header">
                             <h3 class="customer-name">
-                                <a href="/customers/<?= $customer->getId() ?>">
-                                    <?= htmlspecialchars($customer->getName()) ?>
+                                <a href="/customers/<?= $customer->id ?>">
+                                    <?= htmlspecialchars($customer->name) ?>
                                 </a>
                             </h3>
-                            <span class="status-badge status-<?= $customer->getStatus() ?>">
-                                <?= ucfirst($customer->getStatus()) ?>
+                            <span class="status-badge status-<?= $customer->status->value ?>">
+                                <?= $customer->status->getLabel() ?>
                             </span>
                         </div>
                         <div class="customer-details">
                             <p class="customer-email">
-                                <strong>Email:</strong> <?= htmlspecialchars($customer->getEmail()) ?>
+                                <strong>Email:</strong> <?= htmlspecialchars($customer->email) ?>
                             </p>
-                            <?php if ($customer->getPhone()): ?>
+                            <?php if ($customer->phone): ?>
                                 <p class="customer-phone">
-                                    <strong>Phone:</strong> <?= htmlspecialchars($customer->getPhone()) ?>
+                                    <strong>Phone:</strong> <?= htmlspecialchars($customer->phone) ?>
                                 </p>
                             <?php endif; ?>
-                            <?php if ($customer->getCompany()): ?>
+                            <?php if ($customer->company): ?>
                                 <p class="customer-company">
-                                    <strong>Company:</strong> <?= htmlspecialchars($customer->getCompany()) ?>
+                                    <strong>Company:</strong> <?= htmlspecialchars($customer->company) ?>
                                 </p>
                             <?php endif; ?>
                             <p class="customer-date">
-                                <strong>Added:</strong> <?= TimezoneHelper::formatDateForDisplay($customer->getCreatedAt()) ?>
+                                <strong>Added:</strong> <?= TimezoneHelper::formatDateForDisplay($customer->created_at) ?>
                             </p>
                         </div>
                         <div class="customer-actions">
-                            <a href="/customers/<?= $customer->getId() ?>" class="btn btn-sm btn-primary">View</a>
-                            <a href="/customers/<?= $customer->getId() ?>/edit" class="btn btn-sm btn-secondary">Edit</a>
+                            <a href="/customers/<?= $customer->id ?>" class="btn btn-sm btn-primary">View</a>
+                            <a href="/customers/<?= $customer->id ?>/edit" class="btn btn-sm btn-secondary">Edit</a>
                         </div>
                     </div>
                 <?php endforeach; ?>

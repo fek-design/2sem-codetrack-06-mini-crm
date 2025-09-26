@@ -9,20 +9,21 @@ use App\Enums\LeadStatus;
 $this->extend('layout');
 ?>
 
-<?php $this->start('title', htmlspecialchars($lead->getName()) . ' - Lead Details') ?>
+<?php $this->start('title', htmlspecialchars($lead->name) . ' - Lead Details') ?>
 
 <section class="page-header">
     <div class="container">
         <div class="page-header-content">
-            <h1 class="page-heading"><?= htmlspecialchars($lead->getName()) ?></h1>
+            <h1 class="page-heading"><?= htmlspecialchars($lead->name) ?></h1>
             <div class="header-actions">
-                <?php if ($lead->getStatus() !== LeadStatus::CONVERTED->value): ?>
-                    <form method="POST" action="/leads/<?= $lead->getId() ?>/convert" style="display: inline;">
+                <?php if ($lead->status !== LeadStatus::CONVERTED): ?>
+                    <form method="POST" action="/leads/<?= $lead->id ?>/convert" style="display: inline;">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($request->getCsrfToken()) ?>">
                         <button type="submit" class="btn btn-success"
                                 onclick="return confirm('Convert this lead to a customer?')">Convert to Customer</button>
                     </form>
                 <?php endif; ?>
-                <a href="/leads/<?= $lead->getId() ?>/edit" class="btn btn-primary">Edit Lead</a>
+                <a href="/leads/<?= $lead->id ?>/edit" class="btn btn-primary">Edit Lead</a>
                 <a href="/leads" class="btn btn-secondary">Back to Leads</a>
             </div>
         </div>
@@ -38,37 +39,37 @@ $this->extend('layout');
                 <div class="info-grid">
                     <div class="info-item">
                         <label>Name:</label>
-                        <span><?= htmlspecialchars($lead->getName()) ?></span>
+                        <span><?= htmlspecialchars($lead->name) ?></span>
                     </div>
                     <div class="info-item">
                         <label>Email:</label>
-                        <span><a href="mailto:<?= htmlspecialchars($lead->getEmail()) ?>"><?= htmlspecialchars($lead->getEmail()) ?></a></span>
+                        <span><a href="mailto:<?= htmlspecialchars($lead->email) ?>"><?= htmlspecialchars($lead->email) ?></a></span>
                     </div>
                     <div class="info-item">
                         <label>Phone:</label>
-                        <span><?= $lead->getPhone() ? htmlspecialchars($lead->getPhone()) : 'Not provided' ?></span>
+                        <span><?= $lead->phone ? htmlspecialchars($lead->phone) : 'Not provided' ?></span>
                     </div>
                     <div class="info-item">
                         <label>Company:</label>
-                        <span><?= $lead->getCompany() ? htmlspecialchars($lead->getCompany()) : 'Not provided' ?></span>
+                        <span><?= $lead->company ? htmlspecialchars($lead->company) : 'Not provided' ?></span>
                     </div>
                     <div class="info-item">
                         <label>Source:</label>
-                        <span><?= $lead->getSource() ? htmlspecialchars($lead->getSource()) : 'Not provided' ?></span>
+                        <span><?= $lead->source ? htmlspecialchars($lead->source) : 'Not provided' ?></span>
                     </div>
                     <div class="info-item">
                         <label>Status:</label>
-                        <span class="status-badge status-<?= $lead->getStatus() ?>"><?= ucfirst($lead->getStatus()) ?></span>
+                        <span class="status-badge status-<?= $lead->status->value ?>"><?= $lead->status->getLabel() ?></span>
                     </div>
                     <div class="info-item">
-                        <label>Added:</label>
-                        <span><?= TimezoneHelper::formatForDisplay($lead->getCreatedAt()) ?></span>
+                        <label>Created:</label>
+                        <span><?= TimezoneHelper::formatForDisplay($lead->created_at) ?></span>
                     </div>
                 </div>
-                <?php if ($lead->getNotes()): ?>
+                <?php if ($lead->notes): ?>
                     <div class="notes-section">
                         <label>Notes:</label>
-                        <p><?= nl2br(htmlspecialchars($lead->getNotes())) ?></p>
+                        <p><?= nl2br(htmlspecialchars($lead->notes)) ?></p>
                     </div>
                 <?php endif; ?>
             </div>
@@ -76,7 +77,9 @@ $this->extend('layout');
             <!-- Add Interaction Form -->
             <div class="interaction-form-card">
                 <h2>Add Interaction</h2>
-                <form method="POST" action="/leads/<?= $lead->getId() ?>/interactions" class="interaction-form form-spacing">
+                <form method="POST" action="/leads/<?= $lead->id ?>/interactions" class="interaction-form form-spacing">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($request->getCsrfToken()) ?>">
+
                     <div class="form-group">
                         <label for="type">Type:</label>
                         <select name="type" id="type" required>
@@ -85,20 +88,26 @@ $this->extend('layout');
                             <option value="email">Email</option>
                             <option value="meeting">Meeting</option>
                             <option value="note">Note</option>
+                            <option value="follow_up">Follow Up</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label for="subject">Subject:</label>
                         <input type="text" name="subject" id="subject" required>
                     </div>
+
                     <div class="form-group">
                         <label for="description">Description:</label>
                         <textarea name="description" id="description" rows="3"></textarea>
                     </div>
+
                     <div class="form-group">
                         <label for="interaction_date">Date:</label>
-                        <input type="datetime-local" name="interaction_date" id="interaction_date" value="<?= TimezoneHelper::formatForInput(TimezoneHelper::nowUtc()) ?>">
+                        <input type="datetime-local" name="interaction_date" id="interaction_date"
+                               value="<?= date('Y-m-d\TH:i') ?>">
                     </div>
+
                     <button type="submit" class="btn btn-primary">Add Interaction</button>
                 </form>
             </div>
@@ -114,13 +123,13 @@ $this->extend('layout');
                     <?php foreach ($interactions as $interaction): ?>
                         <div class="interaction-item">
                             <div class="interaction-header">
-                                <strong><?= htmlspecialchars($interaction->getSubject()) ?></strong>
-                                <span class="interaction-type">[<?= ucfirst($interaction->getType()) ?>]</span>
-                                <span class="interaction-date"><?= TimezoneHelper::formatForDisplay($interaction->getInteractionDate()) ?></span>
+                                <strong><?= htmlspecialchars($interaction->subject) ?></strong>
+                                <span class="interaction-type">[<?= ucfirst($interaction->type) ?>]</span>
+                                <span class="interaction-date"><?= TimezoneHelper::formatForDisplay($interaction->interaction_date) ?></span>
                             </div>
-                            <?php if ($interaction->getDescription()): ?>
+                            <?php if ($interaction->description): ?>
                                 <div class="interaction-description">
-                                    <?= nl2br(htmlspecialchars($interaction->getDescription())) ?>
+                                    <?= nl2br(htmlspecialchars($interaction->description)) ?>
                                 </div>
                             <?php endif; ?>
                         </div>

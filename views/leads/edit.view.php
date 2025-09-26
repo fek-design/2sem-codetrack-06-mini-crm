@@ -15,7 +15,7 @@ $this->extend('layout');
         <div class="page-header-content">
             <h1 class="page-heading">Edit Lead</h1>
             <div class="header-actions">
-                <a href="/leads/<?= $lead->getId() ?>" class="btn btn-secondary">Back to Lead</a>
+                <a href="/leads/<?= $lead->id ?>" class="btn btn-secondary">Back to Lead</a>
                 <a href="/leads" class="btn btn-outline">All Leads</a>
             </div>
         </div>
@@ -29,7 +29,7 @@ $this->extend('layout');
                 <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="/leads/<?= $lead->getId() ?>" class="lead-form form-spacing">
+            <form method="POST" action="/leads/<?= $lead->id ?>" class="lead-form form-spacing">
                 <div class="form-group">
                     <label for="name">Name *</label>
                     <input type="text" name="name" id="name" required
@@ -72,8 +72,8 @@ $this->extend('layout');
                     <label for="status">Status</label>
                     <select name="status" id="status">
                         <?php foreach (LeadStatus::cases() as $status): ?>
-                            <option value="<?= $status->value ?>" <?= $lead->getStatus() === $status->value ? 'selected' : '' ?>>
-                                <?= $status->getDisplayName() ?>
+                            <option value="<?= $status->value ?>" <?= $lead->status->value === $status->value ? 'selected' : '' ?>>
+                                <?= $status->getLabel() ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -81,12 +81,12 @@ $this->extend('layout');
 
                 <div class="form-group">
                     <label for="notes">Notes</label>
-                    <textarea name="notes" id="notes" rows="4"><?= htmlspecialchars($lead->getNotes()) ?></textarea>
+                    <textarea name="notes" id="notes" rows="4"><?= htmlspecialchars($lead->notes) ?></textarea>
                 </div>
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Update Lead</button>
-                    <a href="/leads/<?= $lead->getId() ?>" class="btn btn-secondary">Cancel</a>
+                    <a href="/leads/<?= $lead->id ?>" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

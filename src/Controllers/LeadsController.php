@@ -95,13 +95,13 @@ class LeadsController extends Controller
 
         // Log initial interaction
         $this->interactionRepository->createForLead(
-            $lead->getId(),
+            $lead->id,
             'note',
             'Lead created',
             'Lead record created in CRM system from source: ' . $source
         );
 
-        $response->redirect('/leads/' . $lead->getId());
+        $response->redirect('/leads/' . $lead->id);
         return $response;
     }
 
@@ -142,7 +142,7 @@ class LeadsController extends Controller
         $phone = $request->getInput('phone', '');
         $company = $request->getInput('company', '');
         $source = $request->getInput('source', '');
-        $status = $request->getInput('status', 'new');
+        $status = LeadStatus::from($request->getInput('status', 'new'));
         $notes = $request->getInput('notes', '');
 
         if (empty($name) || empty($email)) {
@@ -153,13 +153,13 @@ class LeadsController extends Controller
 
         // Track changes for interaction log using ChangeTracker
         $changeTracker = ChangeTracker::track([
-            'Name' => [$lead->getName(), $name],
-            'Email' => [$lead->getEmail(), $email],
-            'Phone' => [$lead->getPhone(), $phone],
-            'Company' => [$lead->getCompany(), $company],
-            'Source' => [$lead->getSource(), $source],
-            'Status' => [$lead->getStatus(), $status],
-            'Notes' => [$lead->getNotes(), $notes],
+            'Name' => [$lead->name, $name],
+            'Email' => [$lead->email, $email],
+            'Phone' => [$lead->phone, $phone],
+            'Company' => [$lead->company, $company],
+            'Source' => [$lead->source, $source],
+            'Status' => [$lead->status->value, $status->value],
+            'Notes' => [$lead->notes, $notes],
         ]);
 
         $success = $this->leadRepository->update($id, $name, $email, $phone, $company, $source, $status, $notes);

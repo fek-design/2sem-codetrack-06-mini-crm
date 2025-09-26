@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Database\Database;
+use App\Enums\CustomerStatus;
 use App\Models\Customer;
 use App\Utils\TimezoneHelper;
 use PDO;
@@ -76,7 +77,7 @@ class CustomerRepository
         return $this->findById($id);
     }
 
-    public function update(int $id, string $name, string $email, string $phone, string $company, string $status, string $notes): bool
+    public function update(int $id, string $name, string $email, string $phone, string $company, CustomerStatus $status, string $notes): bool
     {
         $sql = "UPDATE customers SET name = :name, email = :email, phone = :phone,
                 company = :company, status = :status, notes = :notes, updated_at = :updated_at
@@ -89,7 +90,7 @@ class CustomerRepository
             'email' => $email,
             'phone' => $phone,
             'company' => $company,
-            'status' => $status,
+            'status' => $status->value,
             'notes' => $notes,
             'updated_at' => TimezoneHelper::nowUtc(),
         ]);
@@ -140,7 +141,7 @@ class CustomerRepository
             email: $row['email'],
             phone: $row['phone'] ?? '',
             company: $row['company'] ?? '',
-            status: $row['status'],
+            status: CustomerStatus::from($row['status']),
             notes: $row['notes'] ?? '',
             created_at: $row['created_at'],
             updated_at: $row['updated_at'],

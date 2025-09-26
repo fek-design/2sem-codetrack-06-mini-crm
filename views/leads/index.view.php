@@ -33,42 +33,42 @@ $this->extend('layout');
                     <div class="lead-card">
                         <div class="lead-header">
                             <h3 class="lead-name">
-                                <a href="/leads/<?= $lead->getId() ?>">
-                                    <?= htmlspecialchars($lead->getName()) ?>
+                                <a href="/leads/<?= $lead->id ?>">
+                                    <?= htmlspecialchars($lead->name) ?>
                                 </a>
                             </h3>
-                            <span class="status-badge status-<?= $lead->getStatus() ?>">
-                                <?= ucfirst($lead->getStatus()) ?>
+                            <span class="status-badge status-<?= $lead->status->value ?>">
+                                <?= $lead->status->getLabel() ?>
                             </span>
                         </div>
                         <div class="lead-details">
                             <p class="lead-email">
-                                <strong>Email:</strong> <?= htmlspecialchars($lead->getEmail()) ?>
+                                <strong>Email:</strong> <?= htmlspecialchars($lead->email) ?>
                             </p>
-                            <?php if ($lead->getPhone()): ?>
+                            <?php if ($lead->phone): ?>
                                 <p class="lead-phone">
-                                    <strong>Phone:</strong> <?= htmlspecialchars($lead->getPhone()) ?>
+                                    <strong>Phone:</strong> <?= htmlspecialchars($lead->phone) ?>
                                 </p>
                             <?php endif; ?>
-                            <?php if ($lead->getCompany()): ?>
+                            <?php if ($lead->company): ?>
                                 <p class="lead-company">
-                                    <strong>Company:</strong> <?= htmlspecialchars($lead->getCompany()) ?>
+                                    <strong>Company:</strong> <?= htmlspecialchars($lead->company) ?>
                                 </p>
                             <?php endif; ?>
-                            <?php if ($lead->getSource()): ?>
+                            <?php if ($lead->source): ?>
                                 <p class="lead-source">
-                                    <strong>Source:</strong> <?= htmlspecialchars($lead->getSource()) ?>
+                                    <strong>Source:</strong> <?= htmlspecialchars($lead->source) ?>
                                 </p>
                             <?php endif; ?>
                             <p class="lead-date">
-                                <strong>Added:</strong> <?= TimezoneHelper::formatDateForDisplay($lead->getCreatedAt()) ?>
+                                <strong>Added:</strong> <?= TimezoneHelper::formatDateForDisplay($lead->created_at) ?>
                             </p>
                         </div>
                         <div class="lead-actions">
-                            <a href="/leads/<?= $lead->getId() ?>" class="btn btn-sm btn-primary">View</a>
-                            <a href="/leads/<?= $lead->getId() ?>/edit" class="btn btn-sm btn-secondary">Edit</a>
-                            <?php if ($lead->getStatus() !== LeadStatus::CONVERTED->value): ?>
-                                <form method="POST" action="/leads/<?= $lead->getId() ?>/convert" style="display: inline;">
+                            <a href="/leads/<?= $lead->id ?>" class="btn btn-sm btn-primary">View</a>
+                            <a href="/leads/<?= $lead->id ?>/edit" class="btn btn-sm btn-secondary">Edit</a>
+                            <?php if ($lead->status !== LeadStatus::CONVERTED->value): ?>
+                                <form method="POST" action="/leads/<?= $lead->id ?>/convert" style="display: inline;">
                                     <button type="submit" class="btn btn-sm btn-success"
                                             onclick="return confirm('Convert this lead to a customer?')">Convert</button>
                                 </form>
