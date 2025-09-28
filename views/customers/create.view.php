@@ -1,7 +1,10 @@
 <?php
-/** @var \App\Template $this */
-/** @var string|null $error */
-/** @var array|null $data */
+/**
+ * @var \App\Template $this
+ * @var \App\Http\Request $request
+ * @var array $errors
+ * @var string|null $success
+ */
 
 $this->extend('layout');
 ?>

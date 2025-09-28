@@ -1,6 +1,9 @@
 <?php
-/** @var \App\Template $this */
-/** @var array $leads */
+/**
+ * @var \App\Template $this
+ * @var \App\Models\Lead[] $leads
+ * @var \App\Http\Request $request
+ */
 
 use App\Utils\TimezoneHelper;
 use App\Enums\LeadStatus;
@@ -38,7 +41,7 @@ $this->extend('layout');
                                 </a>
                             </h3>
                             <span class="status-badge status-<?= $lead->status->value ?>">
-                                <?= $lead->status->getLabel() ?>
+                                <?= $lead->status->getDisplayName() ?>
                             </span>
                         </div>
                         <div class="lead-details">

@@ -162,7 +162,7 @@ class LeadsController extends Controller
             'Notes' => [$lead->notes, $notes],
         ]);
 
-        $success = $this->leadRepository->update($id, $name, $email, $phone, $company, $source, $status, $notes);
+        $success = $this->leadRepository->update($id, $name, $email, $phone, $company, $source, $status->value, $notes);
 
         if ($success && $changeTracker->hasChanges()) {
             // Log detailed update interaction
@@ -191,24 +191,24 @@ class LeadsController extends Controller
         }
 
         // Check if customer already exists with this email
-        $existingCustomer = $this->customerRepository->findByEmail($lead->getEmail());
+        $existingCustomer = $this->customerRepository->findByEmail($lead->email);
 
         if ($existingCustomer) {
             // Customer already exists, just update the lead status and redirect
             $this->leadRepository->update(
                 $id,
-                $lead->getName(),
-                $lead->getEmail(),
-                $lead->getPhone(),
-                $lead->getCompany(),
-                $lead->getSource(),
+                $lead->name,
+                $lead->email,
+                $lead->phone,
+                $lead->company,
+                $lead->source,
                 LeadStatus::CONVERTED->value,
-                $lead->getNotes()
+                $lead->notes
             );
 
             // Log conversion interaction on existing customer
             $this->interactionRepository->createForCustomer(
-                $existingCustomer->getId(),
+                $existingCustomer->id,
                 'note',
                 'Lead re-converted',
                 "{Lead #{$id}} converted to existing customer account",
@@ -219,38 +219,38 @@ class LeadsController extends Controller
                 $id,
                 'note',
                 'Re-converted to existing customer',
-                "Lead re-converted to existing customer {Customer #{$existingCustomer->getId()}}",
+                "Lead re-converted to existing customer {Customer #{$existingCustomer->id}}",
             );
 
-            $response->setFlash('success', 'Lead converted to existing customer: ' . $existingCustomer->getName());
-            $response->redirect('/customers/' . $existingCustomer->getId());
+            $response->setFlash('success', 'Lead converted to existing customer: ' . $existingCustomer->name);
+            $response->redirect('/customers/' . $existingCustomer->id);
             return $response;
         }
 
         // Create new customer from lead data
         $customer = $this->customerRepository->create(
-            $lead->getName(),
-            $lead->getEmail(),
-            $lead->getPhone(),
-            $lead->getCompany(),
-            $lead->getNotes() . "\n\nConverted from lead (Source: " . $lead->getSource() . ")"
+            $lead->name,
+            $lead->email,
+            $lead->phone,
+            $lead->company,
+            $lead->notes . "\n\nConverted from lead (Source: " . $lead->source . ")"
         );
 
         // Transfer interactions from lead to customer
         $leadInteractions = $this->interactionRepository->findByLeadId($id);
         foreach ($leadInteractions as $interaction) {
             $this->interactionRepository->createForCustomer(
-                $customer->getId(),
-                $interaction->getType(),
-                '[From Lead] ' . $interaction->getSubject(),
-                $interaction->getDescription(),
-                $interaction->getInteractionDate()
+                $customer->id,
+                $interaction->type,
+                '[From Lead] ' . $interaction->subject,
+                $interaction->description,
+                $interaction->interaction_date
             );
         }
 
         // Log conversion
         $this->interactionRepository->createForCustomer(
-            $customer->getId(),
+            $customer->id,
             'note',
             'Converted from lead',
             "Customer converted from {Lead #{$id}}",
@@ -261,22 +261,22 @@ class LeadsController extends Controller
             $id,
             'note',
             'Converted to customer',
-            "Lead converted to customer {Customer #{$customer->getId()}}",
+            "Lead converted to customer {Customer #{$customer->id}}",
         );
 
         // Update lead status
         $this->leadRepository->update(
             $id,
-            $lead->getName(),
-            $lead->getEmail(),
-            $lead->getPhone(),
-            $lead->getCompany(),
-            $lead->getSource(),
+            $lead->name,
+            $lead->email,
+            $lead->phone,
+            $lead->company,
+            $lead->source,
             'converted',
-            $lead->getNotes()
+            $lead->notes
         );
 
-        $response->redirect('/customers/' . $customer->getId());
+        $response->redirect('/customers/' . $customer->id);
         return $response;
     }
 

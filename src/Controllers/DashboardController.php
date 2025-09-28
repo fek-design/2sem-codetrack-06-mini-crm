@@ -60,7 +60,7 @@ class DashboardController extends Controller
         }
 
         // Get specific lead counts using enum values
-        $unqualifiedLeads = $leadsByStatus[LeadStatus::UNQUALIFIED->value] ?? 0;
+        $lostLeads = $leadsByStatus[LeadStatus::LOST->value] ?? 0;
         $convertedLeads = $leadsByStatus[LeadStatus::CONVERTED->value] ?? 0;
 
         $recentInteractions = $this->interactions->getRecentInteractions(5);
@@ -72,7 +72,7 @@ class DashboardController extends Controller
             'activeCustomers' => $activeCustomers,
             'activeLeads' => $activeLeads,
             'inactiveCustomers' => $inactiveCustomers,
-            'unqualifiedLeads' => $unqualifiedLeads,
+            'lostLeads' => $lostLeads,
             'convertedLeads' => $convertedLeads,
             'customersByStatus' => $customersByStatus,
             'leadsByStatus' => $leadsByStatus,

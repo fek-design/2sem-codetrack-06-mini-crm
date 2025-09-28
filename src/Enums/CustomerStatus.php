@@ -48,20 +48,4 @@ enum CustomerStatus: string
             self::INACTIVE,
         ];
     }
-
-    /**
-     * Check if this status is considered active
-     */
-    public function isActive(): bool
-    {
-        return in_array($this, self::getActiveStatuses());
-    }
-
-    /**
-     * Check if this status is considered inactive
-     */
-    public function isInactive(): bool
-    {
-        return in_array($this, self::getInactiveStatuses());
-    }
 }

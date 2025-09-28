@@ -1,18 +1,18 @@
 <?php
-/** @var \App\Template $this */
-/** @var string|null $success */
-/** @var array<string, array<string>> $errors */
-/** @var \App\Http\Request $request */
-/** @var int $totalCustomers */
-/** @var int $totalLeads */
-/** @var int $activeCustomers */
-/** @var int $inactiveCustomers */
-/** @var int $activeLeads */
-/** @var int $unqualifiedLeads */
-/** @var int $convertedLeads */
-/** @var array $customersByStatus */
-/** @var array $leadsByStatus */
-/** @var array $recentInteractions */
+/**
+ * @var \App\Template $this
+ * @var \App\Http\Request $request
+ * @var int $activeCustomers
+ * @var int $activeLeads
+ * @var int $inactiveCustomers
+ * @var int $lostLeads
+ * @var int $convertedLeads
+ * @var array $customersByStatus
+ * @var array $leadsByStatus
+ * @var \App\Models\Interaction[] $recentInteractions
+ * @var string|null $success
+ * @var array $errors
+ */
 
 use App\Utils\TimezoneHelper;
 
@@ -52,12 +52,12 @@ $this->extend('layout');
                         <h3><?= $activeLeads ?></h3>
                         <p>Active Leads</p>
                         <div class="lead-subcounts">
-                            <?php if ($unqualifiedLeads > 0): ?>
-                                <small class="unqualified-count"><?= $unqualifiedLeads ?> unqualified</small>
+                            <?php if ($lostLeads > 0): ?>
+                                <small class="lost-count"><?= $lostLeads ?> lost</small>
                             <?php endif; ?>
                             <?php if ($convertedLeads > 0): ?>
                                 <small class="converted-count"><?= $convertedLeads ?> converted</small>
-                                    <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="metric-actions">
                             <a href="/leads" class="metric-link">View All →</a>
@@ -134,10 +134,10 @@ $this->extend('layout');
                     <?php foreach ($recentInteractions as $interaction): ?>
                         <div class="activity-item">
                             <div class="activity-content">
-                                <strong><?= htmlspecialchars($interaction->getSubject()) ?></strong>
-                                <span class="activity-type">[<?= ucfirst($interaction->getType()) ?>]</span>
-                                <p class="activity-description"><?= htmlspecialchars($interaction->getDescription()) ?></p>
-                                <small class="activity-date"><?= TimezoneHelper::formatForDisplay($interaction->getInteractionDate()) ?></small>
+                                <strong><?= htmlspecialchars($interaction->subject) ?></strong>
+                                <span class="activity-type">[<?= ucfirst($interaction->type) ?>]</span>
+                                <p class="activity-description"><?= htmlspecialchars($interaction->description) ?></p>
+                                <small class="activity-date"><?= TimezoneHelper::formatForDisplay($interaction->interaction_date) ?></small>
                             </div>
                         </div>
                     <?php endforeach; ?>

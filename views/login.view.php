@@ -1,8 +1,10 @@
 <?php
-/** @var \App\Template $this */
-/** @var array<string, array<string>> $errors */
-/** @var array<string, string> $old */
-/** @var \App\Http\Request $request */
+/**
+ * @var \App\Template $this
+ * @var \App\Http\Request $request
+ * @var array $errors
+ * @var string|null $success
+ */
 
 $this->extend('layout');
 ?>

@@ -1,7 +1,10 @@
 <?php
-/** @var \App\Template $this */
-/** @var \App\Models\Customer $customer */
-/** @var string|null $error */
+/**
+ * @var \App\Template $this
+ * @var \App\Models\Customer $customer
+ * @var string|null $error
+ * @var \App\Http\Request $request
+ */
 
 use App\Enums\CustomerStatus;
 
@@ -32,33 +35,29 @@ $this->extend('layout');
             <form method="POST" action="/customers/<?= $customer->id ?>" class="customer-form form-spacing">
                 <div class="form-group">
                     <label for="name">Name *</label>
-                    <input type="text" name="name" id="name" required
-                           value="<?= htmlspecialchars($customer->getName()) ?>">
+                    <input type="text" name="name" id="name" required value="<?= htmlspecialchars($customer->name) ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email *</label>
-                    <input type="email" name="email" id="email" required
-                           value="<?= htmlspecialchars($customer->getEmail()) ?>">
+                    <input type="email" name="email" id="email" required value="<?= htmlspecialchars($customer->email) ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone</label>
-                    <input type="tel" name="phone" id="phone"
-                           value="<?= htmlspecialchars($customer->getPhone()) ?>">
+                    <input type="tel" name="phone" id="phone" value="<?= htmlspecialchars($customer->phone) ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="company">Company</label>
-                    <input type="text" name="company" id="company"
-                           value="<?= htmlspecialchars($customer->getCompany()) ?>">
+                    <input type="text" name="company" id="company" value="<?= htmlspecialchars($customer->company) ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select name="status" id="status">
                         <?php foreach (CustomerStatus::cases() as $status): ?>
-                            <option value="<?= $status->value ?>" <?= $customer->getStatus() === $status->value ? 'selected' : '' ?>>
+                            <option value="<?= $status->value ?>" <?= $customer->status->value === $status->value ? 'selected' : '' ?>>
                                 <?= $status->getDisplayName() ?>
                             </option>
                         <?php endforeach; ?>
@@ -67,7 +66,7 @@ $this->extend('layout');
 
                 <div class="form-group">
                     <label for="notes">Notes</label>
-                    <textarea name="notes" id="notes" rows="4"><?= htmlspecialchars($customer->getNotes()) ?></textarea>
+                    <textarea name="notes" id="notes" rows="4"><?= htmlspecialchars($customer->notes) ?></textarea>
                 </div>
 
                 <div class="form-actions">

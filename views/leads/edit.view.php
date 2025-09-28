@@ -1,7 +1,10 @@
 <?php
-/** @var \App\Template $this */
-/** @var \App\Models\Lead $lead */
-/** @var string|null $error */
+/**
+ * @var \App\Template $this
+ * @var \App\Models\Lead $lead
+ * @var string|null $error
+ * @var \App\Http\Request $request
+ */
 
 use App\Enums\LeadStatus;
 
@@ -32,39 +35,35 @@ $this->extend('layout');
             <form method="POST" action="/leads/<?= $lead->id ?>" class="lead-form form-spacing">
                 <div class="form-group">
                     <label for="name">Name *</label>
-                    <input type="text" name="name" id="name" required
-                           value="<?= htmlspecialchars($lead->getName()) ?>">
+                    <input type="text" name="name" id="name" required value="<?= htmlspecialchars($lead->name) ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email *</label>
-                    <input type="email" name="email" id="email" required
-                           value="<?= htmlspecialchars($lead->getEmail()) ?>">
+                    <input type="email" name="email" id="email" required value="<?= htmlspecialchars($lead->email) ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone</label>
-                    <input type="tel" name="phone" id="phone"
-                           value="<?= htmlspecialchars($lead->getPhone()) ?>">
+                    <input type="tel" name="phone" id="phone" value="<?= htmlspecialchars($lead->phone) ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="company">Company</label>
-                    <input type="text" name="company" id="company"
-                           value="<?= htmlspecialchars($lead->getCompany()) ?>">
+                    <input type="text" name="company" id="company" value="<?= htmlspecialchars($lead->company) ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="source">Lead Source</label>
                     <select name="source" id="source">
                         <option value="">Select source...</option>
-                        <option value="website" <?= $lead->getSource() === 'website' ? 'selected' : '' ?>>Website</option>
-                        <option value="referral" <?= $lead->getSource() === 'referral' ? 'selected' : '' ?>>Referral</option>
-                        <option value="social_media" <?= $lead->getSource() === 'social_media' ? 'selected' : '' ?>>Social Media</option>
-                        <option value="email_campaign" <?= $lead->getSource() === 'email_campaign' ? 'selected' : '' ?>>Email Campaign</option>
-                        <option value="cold_call" <?= $lead->getSource() === 'cold_call' ? 'selected' : '' ?>>Cold Call</option>
-                        <option value="trade_show" <?= $lead->getSource() === 'trade_show' ? 'selected' : '' ?>>Trade Show</option>
-                        <option value="other" <?= $lead->getSource() === 'other' ? 'selected' : '' ?>>Other</option>
+                        <option value="website" <?= $lead->source === 'website' ? 'selected' : '' ?>>Website</option>
+                        <option value="referral" <?= $lead->source === 'referral' ? 'selected' : '' ?>>Referral</option>
+                        <option value="social_media" <?= $lead->source === 'social_media' ? 'selected' : '' ?>>Social Media</option>
+                        <option value="email_campaign" <?= $lead->source === 'email_campaign' ? 'selected' : '' ?>>Email Campaign</option>
+                        <option value="cold_call" <?= $lead->source === 'cold_call' ? 'selected' : '' ?>>Cold Call</option>
+                        <option value="trade_show" <?= $lead->source === 'trade_show' ? 'selected' : '' ?>>Trade Show</option>
+                        <option value="other" <?= $lead->source === 'other' ? 'selected' : '' ?>>Other</option>
                     </select>
                 </div>
 
@@ -73,7 +72,7 @@ $this->extend('layout');
                     <select name="status" id="status">
                         <?php foreach (LeadStatus::cases() as $status): ?>
                             <option value="<?= $status->value ?>" <?= $lead->status->value === $status->value ? 'selected' : '' ?>>
-                                <?= $status->getLabel() ?>
+                                <?= $status->getDisplayName() ?>
                             </option>
                         <?php endforeach; ?>
                     </select>

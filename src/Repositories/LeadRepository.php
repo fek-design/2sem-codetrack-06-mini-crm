@@ -137,7 +137,7 @@ class LeadRepository
             phone: $row['phone'] ?? '',
             company: $row['company'] ?? '',
             source: $row['source'] ?? '',
-            status: $row['status'],
+            status: LeadStatus::from($row['status']),
             notes: $row['notes'] ?? '',
             created_at: $row['created_at'],
             updated_at: $row['updated_at'],

@@ -1,21 +1,24 @@
 <?php
-/** @var \App\Template $this */
-/** @var \App\Models\Customer $customer */
-/** @var array $interactions */
+/**
+ * @var \App\Template $this
+ * @var \App\Models\Customer $customer
+ * @var \App\Models\Interaction[] $interactions
+ * @var \App\Http\Request $request
+ */
 
 use App\Utils\TimezoneHelper;
 
 $this->extend('layout');
 ?>
 
-<?php $this->start('title', htmlspecialchars($customer->getName()) . ' - Customer Details') ?>
+<?php $this->start('title', htmlspecialchars($customer->name) . ' - Customer Details') ?>
 
 <section class="page-header">
     <div class="container">
         <div class="page-header-content">
-            <h1 class="page-heading"><?= htmlspecialchars($customer->getName()) ?></h1>
+            <h1 class="page-heading"><?= htmlspecialchars($customer->name) ?></h1>
             <div class="header-actions">
-                <a href="/customers/<?= $customer->getId() ?>/edit" class="btn btn-primary">Edit Customer</a>
+                <a href="/customers/<?= $customer->id ?>/edit" class="btn btn-primary">Edit Customer</a>
                 <a href="/customers" class="btn btn-secondary">Back to Customers</a>
             </div>
         </div>
@@ -31,33 +34,33 @@ $this->extend('layout');
                 <div class="info-grid">
                     <div class="info-item">
                         <label>Name:</label>
-                        <span><?= htmlspecialchars($customer->getName()) ?></span>
+                        <span><?= htmlspecialchars($customer->name) ?></span>
                     </div>
                     <div class="info-item">
                         <label>Email:</label>
-                        <span><a href="mailto:<?= htmlspecialchars($customer->getEmail()) ?>"><?= htmlspecialchars($customer->getEmail()) ?></a></span>
+                        <span><a href="mailto:<?= htmlspecialchars($customer->email) ?>"><?= htmlspecialchars($customer->email) ?></a></span>
                     </div>
                     <div class="info-item">
                         <label>Phone:</label>
-                        <span><?= $customer->getPhone() ? htmlspecialchars($customer->getPhone()) : 'Not provided' ?></span>
+                        <span><?= $customer->phone ? htmlspecialchars($customer->phone) : 'Not provided' ?></span>
                     </div>
                     <div class="info-item">
                         <label>Company:</label>
-                        <span><?= $customer->getCompany() ? htmlspecialchars($customer->getCompany()) : 'Not provided' ?></span>
+                        <span><?= $customer->company ? htmlspecialchars($customer->company) : 'Not provided' ?></span>
                     </div>
                     <div class="info-item">
                         <label>Status:</label>
-                        <span class="status-badge status-<?= $customer->getStatus() ?>"><?= ucfirst($customer->getStatus()) ?></span>
+                        <span class="status-badge status-<?= $customer->status->value ?>"><?= ucfirst($customer->status->value) ?></span>
                     </div>
                     <div class="info-item">
                         <label>Added:</label>
-                        <span><?= TimezoneHelper::formatForDisplay($customer->getCreatedAt()) ?></span>
+                        <span><?= TimezoneHelper::formatForDisplay($customer->created_at) ?></span>
                     </div>
                 </div>
-                <?php if ($customer->getNotes()): ?>
+                <?php if ($customer->notes): ?>
                     <div class="notes-section">
                         <label>Notes:</label>
-                        <p><?= nl2br(htmlspecialchars($customer->getNotes())) ?></p>
+                        <p><?= nl2br(htmlspecialchars($customer->notes)) ?></p>
                     </div>
                 <?php endif; ?>
             </div>
@@ -66,7 +69,9 @@ $this->extend('layout');
             <div class="interaction-form-card">
                 <h2>Add Interaction</h2>
                 <form method="POST" action="/customers/<?= $customer->id ?>/interactions" class="interaction-form form-spacing">
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($request->getCsrfToken()) ?>">
+                    <?php if (isset($request)): ?>
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($request->getCsrfToken()) ?>">
+                    <?php endif; ?>
 
                     <div class="form-group">
                         <label for="type">Type:</label>

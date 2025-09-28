@@ -1,7 +1,10 @@
 <?php
-/** @var \App\Template $this */
-/** @var array $customers */
-/** @var string $search */
+/**
+ * @var \App\Template $this
+ * @var \App\Models\Customer[] $customers
+ * @var string $search
+ * @var \App\Http\Request $request
+ */
 
 use App\Utils\TimezoneHelper;
 
@@ -55,7 +58,7 @@ $this->extend('layout');
                                 </a>
                             </h3>
                             <span class="status-badge status-<?= $customer->status->value ?>">
-                                <?= $customer->status->getLabel() ?>
+                                <?= $customer->status->getDisplayName() ?>
                             </span>
                         </div>
                         <div class="customer-details">

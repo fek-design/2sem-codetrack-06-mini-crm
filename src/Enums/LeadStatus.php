@@ -16,6 +16,20 @@ enum LeadStatus: string
     case LOST = 'lost';
 
     /**
+     * Get the display name for the status
+     */
+    public function getDisplayName(): string
+    {
+        return match ($this) {
+            self::NEW => 'New',
+            self::CONTACTED => 'Contacted',
+            self::QUALIFIED => 'Qualified',
+            self::CONVERTED => 'Converted',
+            self::LOST => 'Lost',
+        };
+    }
+
+    /**
      * Get all active lead statuses.
      */
     public static function getActiveStatuses(): array
@@ -36,19 +50,5 @@ enum LeadStatus: string
             self::CONVERTED,
             self::LOST,
         ];
-    }
-
-    /**
-     * Get a human-readable label for the status.
-     */
-    public function getLabel(): string
-    {
-        return match ($this) {
-            self::NEW => 'New',
-            self::CONTACTED => 'Contacted',
-            self::QUALIFIED => 'Qualified',
-            self::CONVERTED => 'Converted',
-            self::LOST => 'Lost',
-        };
     }
 }
