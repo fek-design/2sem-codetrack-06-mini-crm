@@ -3,10 +3,13 @@
  * @var \App\Template $this
  * @var \App\Models\Lead[] $leads
  * @var \App\Http\Request $request
+ * @var string|null $success
+ * @var array $errors
  */
 
 use App\Utils\TimezoneHelper;
 use App\Enums\LeadStatus;
+use App\Enums\LeadSource;
 
 $this->extend('layout');
 ?>

@@ -29,10 +29,6 @@ $this->extend('layout');
 <section class="form-section">
     <div class="container">
         <div class="form-card">
-            <?php if (isset($error)): ?>
-                <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
-            <?php endif; ?>
-
             <form method="POST" action="/leads/<?= $lead->id ?>" class="lead-form form-spacing">
                 <div class="form-group">
                     <label for="name">Name *</label>
@@ -85,6 +81,14 @@ $this->extend('layout');
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Update Lead</button>
                     <a href="/leads/<?= $lead->id ?>" class="btn btn-secondary">Cancel</a>
+                    <form method="POST" action="/leads/<?= $lead->id ?>" style="display: inline-block; margin-left: 10px;">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($request->getCsrfToken()) ?>">
+                        <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Are you sure you want to delete this lead? This action cannot be undone.')">
+                            Delete Lead
+                        </button>
+                    </form>
                 </div>
             </form>
         </div>

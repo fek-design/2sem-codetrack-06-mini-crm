@@ -24,20 +24,6 @@ $this->extend('layout');
 <section class="form-section">
     <div class="container">
         <div class="form-card">
-            <?php if (isset($errors) && count($errors) > 0): ?>
-                <div class="alert alert-error">
-                    <ul>
-                        <?php foreach ($errors as $error): ?>
-                            <li><?= htmlspecialchars($error) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-
-            <?php if (isset($success)): ?>
-                <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
-            <?php endif; ?>
-
             <form method="POST" action="/leads" class="lead-form form-spacing">
                 <div class="form-group">
                     <label for="name">Name *</label>

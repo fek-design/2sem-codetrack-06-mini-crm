@@ -58,6 +58,17 @@ class Router
     }
 
     /**
+     * Register a DELETE route with the router.
+     *
+     * @param string $path The URI path for the route.
+     * @param array $handler The controller action for the route.
+     */
+    public function delete(string $path, array $handler): void
+    {
+        $this->addRoute('DELETE', $path, $handler);
+    }
+
+    /**
      * Add a route for a specific HTTP method.
      *
      * @param string $method The HTTP method (GET, POST, etc.).
@@ -69,7 +80,7 @@ class Router
         // Convert {param} segments to named capture groups
         $pattern = preg_replace('/\{(\w+)\}/', '(?P<$1>\d+)', $path);
         $pattern = str_replace('/', '\/', $pattern);
-        
+
         $this->routes[$method][$path] = [
             'pattern' => '/^' . $pattern . '$/',
             'handler' => $handler
@@ -90,7 +101,7 @@ class Router
         $routeHandler = null;
         $routeParams = [];
 
-        // Find matching route pattern
+        // First, find matching route pattern and extract parameters
         foreach ($this->routes[$method] ?? [] as $route) {
             if (preg_match($route['pattern'], $path, $matches)) {
                 // Extract named parameters
@@ -102,6 +113,26 @@ class Router
                 $routeHandler = $route['handler'];
                 $matched = true;
                 break;
+            }
+        }
+
+        // Merge route parameters with query parameters BEFORE creating Request object
+        $_GET = array_merge($_GET, $routeParams);
+
+        // Create request object after merging route parameters (handles method spoofing)
+        $request = Request::fromGlobals();
+        $actualMethod = $request->getMethod();
+
+        // If method spoofing changed the method, re-check routes with the actual method
+        if ($actualMethod !== $method) {
+            $matched = false;
+            $routeHandler = null;
+            foreach ($this->routes[$actualMethod] ?? [] as $route) {
+                if (preg_match($route['pattern'], $path, $matches)) {
+                    $routeHandler = $route['handler'];
+                    $matched = true;
+                    break;
+                }
             }
         }
 
@@ -127,16 +158,8 @@ class Router
         $controller = new $class();
         $controller->setTemplate($this->template);
 
-        // Merge route parameters with query parameters
-        $_GET = array_merge($_GET, $routeParams);
-        $request = Request::fromGlobals();
-        
-        // Add route parameters to controller method arguments if needed
-        if (!empty($routeParams)) {
-            $response = $controller->$methodName($request, ...array_values($routeParams));
-        } else {
-            $response = $controller->$methodName($request);
-        }
+        // Call controller method with just the request object
+        $response = $controller->$methodName($request);
 
         if (!$response instanceof Response) {
             throw new \RuntimeException(

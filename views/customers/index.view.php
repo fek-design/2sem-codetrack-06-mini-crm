@@ -4,6 +4,8 @@
  * @var \App\Models\Customer[] $customers
  * @var string $search
  * @var \App\Http\Request $request
+ * @var string|null $success
+ * @var array $errors
  */
 
 use App\Utils\TimezoneHelper;

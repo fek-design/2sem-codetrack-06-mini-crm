@@ -103,6 +103,14 @@ class Request
         $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
         $json = null;
 
+        // Support method spoofing via _method field in POST requests
+        if ($method === 'POST' && isset($_POST['_method'])) {
+            $spoofedMethod = strtoupper($_POST['_method']);
+            if (in_array($spoofedMethod, ['PUT', 'PATCH', 'DELETE'])) {
+                $method = $spoofedMethod;
+            }
+        }
+
         if (str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')) {
             $raw = file_get_contents('php://input');
             $json = json_decode($raw, true) ?? [];

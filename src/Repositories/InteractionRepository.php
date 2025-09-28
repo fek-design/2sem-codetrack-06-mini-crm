@@ -129,6 +129,13 @@ class InteractionRepository
         return $interactions;
     }
 
+    public function delete(int $id): bool
+    {
+        $sql = "DELETE FROM interactions WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
+
     private function mapRowToInteraction(array $row): Interaction
     {
         return new Interaction(

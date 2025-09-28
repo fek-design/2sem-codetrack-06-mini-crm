@@ -34,6 +34,7 @@ $router->post('/customers', [CustomersController::class, 'store']);
 $router->get('/customers/{id}', [CustomersController::class, 'show']);
 $router->get('/customers/{id}/edit', [CustomersController::class, 'edit']);
 $router->post('/customers/{id}', [CustomersController::class, 'update']);
+$router->delete('/customers/{id}', [CustomersController::class, 'delete']);
 $router->post('/customers/{id}/interactions', [CustomersController::class, 'addInteraction']);
 
 $router->get('/leads', [LeadsController::class, 'index']);
@@ -42,6 +43,7 @@ $router->post('/leads', [LeadsController::class, 'store']);
 $router->get('/leads/{id}', [LeadsController::class, 'show']);
 $router->get('/leads/{id}/edit', [LeadsController::class, 'edit']);
 $router->post('/leads/{id}', [LeadsController::class, 'update']);
+$router->delete('/leads/{id}', [LeadsController::class, 'delete']);
 $router->post('/leads/{id}/convert', [LeadsController::class, 'convertToCustomer']);
 $router->post('/leads/{id}/interactions', [LeadsController::class, 'addInteraction']);
 

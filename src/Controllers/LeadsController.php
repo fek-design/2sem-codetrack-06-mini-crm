@@ -36,6 +36,7 @@ class LeadsController extends Controller
 
         $response = new Response();
         $response->setTemplate($this->template, 'leads/index', [
+            ...$this->pullFlash($response),
             'leads' => $leads,
             'request' => $request,
         ]);
@@ -313,6 +314,37 @@ class LeadsController extends Controller
         );
 
         $response->redirect('/leads/' . $leadId);
+        return $response;
+    }
+
+    public function delete(Request $request): Response
+    {
+        $id = (int) $request->getQuery('id');
+        $lead = $this->leadRepository->findById($id);
+
+        $response = new Response();
+
+        if (!$lead) {
+            $response->redirect('/leads');
+            return $response;
+        }
+
+        // Delete associated interactions first
+        $interactions = $this->interactionRepository->findByLeadId($id);
+        foreach ($interactions as $interaction) {
+            $this->interactionRepository->delete($interaction->id);
+        }
+
+        // Delete the lead
+        $success = $this->leadRepository->delete($id);
+
+        if ($success) {
+            $response->setFlash('success', 'Lead "' . $lead->name . '" has been deleted successfully.');
+        } else {
+            $response->setFlash('error', 'Failed to delete lead. Please try again.');
+        }
+
+        $response->redirect('/leads');
         return $response;
     }
 }

@@ -38,6 +38,7 @@ class CustomersController extends Controller
 
         $response = new Response();
         $response->setTemplate($this->template, 'customers/index', [
+            ...$this->pullFlash($response),
             'customers' => $customers,
             'search' => $search,
             'request' => $request,
@@ -106,13 +107,13 @@ class CustomersController extends Controller
 
         // Log initial interaction
         $this->interactionRepository->createForCustomer(
-            $customer->getId(),
+            $customer->id,
             'note',
             'Customer created',
             'Customer record created in CRM system'
         );
 
-        $response->redirect('/customers/' . $customer->getId());
+        $response->redirect('/customers/' . $customer->id);
         return $response;
     }
 
@@ -219,6 +220,37 @@ class CustomersController extends Controller
         );
 
         $response->redirect('/customers/' . $customerId);
+        return $response;
+    }
+
+    public function delete(Request $request): Response
+    {
+        $id = (int) $request->getQuery('id');
+        $customer = $this->customerRepository->findById($id);
+
+        $response = new Response();
+
+        if (!$customer) {
+            $response->redirect('/customers');
+            return $response;
+        }
+
+        // Delete associated interactions first
+        $interactions = $this->interactionRepository->findByCustomerId($id);
+        foreach ($interactions as $interaction) {
+            $this->interactionRepository->delete($interaction->id);
+        }
+
+        // Delete the customer
+        $success = $this->customerRepository->delete($id);
+
+        if ($success) {
+            $response->setFlash('success', 'Customer "' . $customer->name . '" has been deleted successfully.');
+        } else {
+            $response->setFlash('error', 'Failed to delete customer. Please try again.');
+        }
+
+        $response->redirect('/customers');
         return $response;
     }
 }
