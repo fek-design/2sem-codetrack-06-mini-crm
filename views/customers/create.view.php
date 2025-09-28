@@ -3,6 +3,7 @@
  * @var \App\Template $this
  * @var \App\Http\Request $request
  * @var array $errors
+ * @var array $old
  * @var string|null $success
  */
 
@@ -26,31 +27,31 @@ $this->extend('layout');
             <form method="POST" action="/customers" class="customer-form form-spacing">
                 <div class="form-group">
                     <label for="name">Name *</label>
-                    <input type="text" name="name" id="name" required
-                           value="<?= htmlspecialchars($data['name'] ?? '') ?>">
+                    <input type="text" name="name" id="name" aria-required
+                           value="<?= htmlspecialchars($old['name'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email *</label>
-                    <input type="email" name="email" id="email" required
-                           value="<?= htmlspecialchars($data['email'] ?? '') ?>">
+                    <input type="email" name="email" id="email" aria-required
+                           value="<?= htmlspecialchars($old['email'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone</label>
                     <input type="tel" name="phone" id="phone"
-                           value="<?= htmlspecialchars($data['phone'] ?? '') ?>">
+                           value="<?= htmlspecialchars($old['phone'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="company">Company</label>
                     <input type="text" name="company" id="company"
-                           value="<?= htmlspecialchars($data['company'] ?? '') ?>">
+                           value="<?= htmlspecialchars($old['company'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="notes">Notes</label>
-                    <textarea name="notes" id="notes" rows="4"><?= htmlspecialchars($data['notes'] ?? '') ?></textarea>
+                    <textarea name="notes" id="notes" rows="4"><?= htmlspecialchars($old['notes'] ?? '') ?></textarea>
                 </div>
 
                 <div class="form-actions">

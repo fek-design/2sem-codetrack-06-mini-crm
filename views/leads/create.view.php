@@ -3,6 +3,7 @@
  * @var \App\Template $this
  * @var \App\Http\Request $request
  * @var array $errors
+ * @var array $old
  * @var string|null $success
  */
 use App\Enums\LeadSource;
@@ -28,25 +29,25 @@ $this->extend('layout');
                 <div class="form-group">
                     <label for="name">Name *</label>
                     <input type="text" name="name" id="name" required
-                           value="<?= htmlspecialchars($request->get('name') ?? '') ?>">
+                           value="<?= htmlspecialchars($old['name'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email *</label>
                     <input type="email" name="email" id="email" required
-                           value="<?= htmlspecialchars($request->get('email') ?? '') ?>">
+                           value="<?= htmlspecialchars($old['email'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone</label>
                     <input type="tel" name="phone" id="phone"
-                           value="<?= htmlspecialchars($request->get('phone') ?? '') ?>">
+                           value="<?= htmlspecialchars($old['phone'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="company">Company</label>
                     <input type="text" name="company" id="company"
-                           value="<?= htmlspecialchars($request->get('company') ?? '') ?>">
+                           value="<?= htmlspecialchars($old['company'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
@@ -54,7 +55,7 @@ $this->extend('layout');
                     <select name="source" id="source">
                         <option value="">Select source...</option>
                         <?php foreach (LeadSource::cases() as $source): ?>
-                            <option value="<?= $source->value ?>" <?= ($request->get('source') ?? 'none') === $source->value ? 'selected' : '' ?>>
+                            <option value="<?= $source->value ?>" <?= ($old['source'] ?? '') === $source->value ? 'selected' : '' ?>>
                                 <?= $source->getDisplayName() ?>
                             </option>
                         <?php endforeach; ?>
@@ -63,7 +64,7 @@ $this->extend('layout');
 
                 <div class="form-group">
                     <label for="notes">Notes</label>
-                    <textarea name="notes" id="notes" rows="4"><?= htmlspecialchars($request->get('notes') ?? '') ?></textarea>
+                    <textarea name="notes" id="notes" rows="4"><?= htmlspecialchars($old['notes'] ?? '') ?></textarea>
                 </div>
 
                 <div class="form-actions">
