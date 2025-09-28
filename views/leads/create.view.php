@@ -53,7 +53,7 @@ $this->extend('layout');
                 <div class="form-group">
                     <label for="source">Lead Source</label>
                     <select name="source" id="source">
-                        <option value="">Select source...</option>
+                        <option value="none">Select source...</option>
                         <?php foreach (LeadSource::cases() as $source): ?>
                             <option value="<?= $source->value ?>" <?= ($old['source'] ?? '') === $source->value ? 'selected' : '' ?>>
                                 <?= $source->getDisplayName() ?>
