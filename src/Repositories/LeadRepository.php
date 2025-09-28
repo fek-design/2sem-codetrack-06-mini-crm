@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Database\Database;
 use App\Enums\LeadStatus;
+use App\Enums\LeadSource;
 use App\Models\Lead;
 use App\Utils\TimezoneHelper;
 use PDO;
@@ -45,7 +46,7 @@ class LeadRepository
         return $row ? $this->mapRowToLead($row) : null;
     }
 
-    public function create(string $name, string $email, string $phone, string $company, string $source, string $notes = ''): Lead
+    public function create(string $name, string $email, string $phone, string $company, LeadSource $source, string $notes = ''): Lead
     {
         $sql = "INSERT INTO leads (name, email, phone, company, source, notes, created_at, updated_at)
                 VALUES (:name, :email, :phone, :company, :source, :notes, :created_at, :updated_at)";
@@ -58,7 +59,7 @@ class LeadRepository
             'email' => $email,
             'phone' => $phone,
             'company' => $company,
-            'source' => $source,
+            'source' => $source->value,
             'notes' => $notes,
             'created_at' => $now,
             'updated_at' => $now,
@@ -68,7 +69,7 @@ class LeadRepository
         return $this->findById($id);
     }
 
-    public function update(int $id, string $name, string $email, string $phone, string $company, string $source, string $status, string $notes): bool
+    public function update(int $id, string $name, string $email, string $phone, string $company, LeadSource $source, string $status, string $notes): bool
     {
         $sql = "UPDATE leads SET name = :name, email = :email, phone = :phone,
                 company = :company, source = :source, status = :status, notes = :notes, updated_at = :updated_at
@@ -81,7 +82,7 @@ class LeadRepository
             'email' => $email,
             'phone' => $phone,
             'company' => $company,
-            'source' => $source,
+            'source' => $source->value,
             'status' => $status,
             'notes' => $notes,
             'updated_at' => TimezoneHelper::nowUtc(),
@@ -93,13 +94,6 @@ class LeadRepository
         $sql = "DELETE FROM leads WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute(['id' => $id]);
-    }
-
-    public function convertToCustomer(int $leadId): bool
-    {
-        // This will be used to convert a lead to a customer
-        // The actual conversion logic will be in the controller
-        return $this->update($leadId, '', '', '', '', '', 'converted', '');
     }
 
     public function countByStatus(): array
@@ -136,8 +130,8 @@ class LeadRepository
             email: $row['email'],
             phone: $row['phone'] ?? '',
             company: $row['company'] ?? '',
-            source: $row['source'] ?? '',
-            status: LeadStatus::from($row['status']),
+            source: \App\Enums\LeadSource::from($row['source'] ?? 'none'),
+            status: \App\Enums\LeadStatus::from($row['status']),
             notes: $row['notes'] ?? '',
             created_at: $row['created_at'],
             updated_at: $row['updated_at'],

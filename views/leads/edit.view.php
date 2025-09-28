@@ -7,6 +7,7 @@
  */
 
 use App\Enums\LeadStatus;
+use App\Enums\LeadSource;
 
 $this->extend('layout');
 ?>
@@ -57,13 +58,11 @@ $this->extend('layout');
                     <label for="source">Lead Source</label>
                     <select name="source" id="source">
                         <option value="">Select source...</option>
-                        <option value="website" <?= $lead->source === 'website' ? 'selected' : '' ?>>Website</option>
-                        <option value="referral" <?= $lead->source === 'referral' ? 'selected' : '' ?>>Referral</option>
-                        <option value="social_media" <?= $lead->source === 'social_media' ? 'selected' : '' ?>>Social Media</option>
-                        <option value="email_campaign" <?= $lead->source === 'email_campaign' ? 'selected' : '' ?>>Email Campaign</option>
-                        <option value="cold_call" <?= $lead->source === 'cold_call' ? 'selected' : '' ?>>Cold Call</option>
-                        <option value="trade_show" <?= $lead->source === 'trade_show' ? 'selected' : '' ?>>Trade Show</option>
-                        <option value="other" <?= $lead->source === 'other' ? 'selected' : '' ?>>Other</option>
+                        <?php foreach (LeadSource::cases() as $source): ?>
+                            <option value="<?= $source->value ?>" <?= $lead->source->value === $source->value ? 'selected' : '' ?>>
+                                <?= $source->getDisplayName() ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 

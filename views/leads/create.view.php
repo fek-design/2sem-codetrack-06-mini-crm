@@ -5,6 +5,7 @@
  * @var array $errors
  * @var string|null $success
  */
+use App\Enums\LeadSource;
 
 $this->extend('layout');
 ?>
@@ -66,13 +67,11 @@ $this->extend('layout');
                     <label for="source">Lead Source</label>
                     <select name="source" id="source">
                         <option value="">Select source...</option>
-                        <option value="website" <?= ($request->get('source') ?? '') === 'website' ? 'selected' : '' ?>>Website</option>
-                        <option value="referral" <?= ($request->get('source') ?? '') === 'referral' ? 'selected' : '' ?>>Referral</option>
-                        <option value="social_media" <?= ($request->get('source') ?? '') === 'social_media' ? 'selected' : '' ?>>Social Media</option>
-                        <option value="email_campaign" <?= ($request->get('source') ?? '') === 'email_campaign' ? 'selected' : '' ?>>Email Campaign</option>
-                        <option value="cold_call" <?= ($request->get('source') ?? '') === 'cold_call' ? 'selected' : '' ?>>Cold Call</option>
-                        <option value="trade_show" <?= ($request->get('source') ?? '') === 'trade_show' ? 'selected' : '' ?>>Trade Show</option>
-                        <option value="other" <?= ($request->get('source') ?? '') === 'other' ? 'selected' : '' ?>>Other</option>
+                        <?php foreach (LeadSource::cases() as $source): ?>
+                            <option value="<?= $source->value ?>" <?= ($request->get('source') ?? 'none') === $source->value ? 'selected' : '' ?>>
+                                <?= $source->getDisplayName() ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 

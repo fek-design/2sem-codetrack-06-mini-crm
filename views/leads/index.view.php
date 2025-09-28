@@ -60,7 +60,7 @@ $this->extend('layout');
                             <?php endif; ?>
                             <?php if ($lead->source): ?>
                                 <p class="lead-source">
-                                    <strong>Source:</strong> <?= htmlspecialchars($lead->source) ?>
+                                    <strong>Source:</strong> <?= htmlspecialchars($lead->source->getDisplayName()) ?>
                                 </p>
                             <?php endif; ?>
                             <p class="lead-date">

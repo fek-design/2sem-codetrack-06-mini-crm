@@ -8,6 +8,7 @@
 
 use App\Utils\TimezoneHelper;
 use App\Enums\LeadStatus;
+use App\Enums\LeadSource;
 
 $this->extend('layout');
 ?>
@@ -58,7 +59,7 @@ $this->extend('layout');
                     </div>
                     <div class="info-item">
                         <label>Source:</label>
-                        <span><?= $lead->source ? htmlspecialchars($lead->source) : 'Not provided' ?></span>
+                        <span><?= $lead->source ? htmlspecialchars($lead->source->getDisplayName()) : 'Not provided' ?></span>
                     </div>
                     <div class="info-item">
                         <label>Status:</label>

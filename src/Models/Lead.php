@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\LeadStatus;
+use App\Enums\LeadSource;
 
 /**
  * Represents a lead in the CRM system.
@@ -17,7 +18,7 @@ class Lead
         public string $email,
         public string $phone,
         public string $company,
-        public string $source,
+        public LeadSource $source,
         public LeadStatus $status,
         public string $notes,
         public readonly string $created_at,

@@ -12,6 +12,7 @@ use App\Repositories\CustomerRepository;
 use App\Repositories\InteractionRepository;
 use App\Utils\ChangeTracker;
 use App\Enums\LeadStatus;
+use App\Enums\LeadSource;
 
 /**
  * Controller for managing leads in the CRM system.
@@ -79,7 +80,7 @@ class LeadsController extends Controller
         $email = $request->getInput('email', '');
         $phone = $request->getInput('phone', '');
         $company = $request->getInput('company', '');
-        $source = $request->getInput('source', '');
+        $source = $request->getInput('source', 'none');
         $notes = $request->getInput('notes', '');
 
         $response = new Response();
@@ -91,14 +92,14 @@ class LeadsController extends Controller
             return $response;
         }
 
-        $lead = $this->leadRepository->create($name, $email, $phone, $company, $source, $notes);
+        $lead = $this->leadRepository->create($name, $email, $phone, $company, LeadSource::from($source), $notes);
 
         // Log initial interaction
         $this->interactionRepository->createForLead(
             $lead->id,
             'note',
             'Lead created',
-            'Lead record created in CRM system from source: ' . $source
+            'Lead record created in CRM system from source: ' . $lead->source->getDisplayName()
         );
 
         $response->redirect('/leads/' . $lead->id);
@@ -141,7 +142,7 @@ class LeadsController extends Controller
         $email = $request->getInput('email', '');
         $phone = $request->getInput('phone', '');
         $company = $request->getInput('company', '');
-        $source = $request->getInput('source', '');
+        $source = $request->getInput('source', 'none');
         $status = LeadStatus::from($request->getInput('status', 'new'));
         $notes = $request->getInput('notes', '');
 
@@ -157,12 +158,12 @@ class LeadsController extends Controller
             'Email' => [$lead->email, $email],
             'Phone' => [$lead->phone, $phone],
             'Company' => [$lead->company, $company],
-            'Source' => [$lead->source, $source],
+            'Source' => [$lead->source->value, $source],
             'Status' => [$lead->status->value, $status->value],
             'Notes' => [$lead->notes, $notes],
         ]);
 
-        $success = $this->leadRepository->update($id, $name, $email, $phone, $company, $source, $status->value, $notes);
+        $success = $this->leadRepository->update($id, $name, $email, $phone, $company, LeadSource::from($source), $status->value, $notes);
 
         if ($success && $changeTracker->hasChanges()) {
             // Log detailed update interaction
@@ -233,7 +234,7 @@ class LeadsController extends Controller
             $lead->email,
             $lead->phone,
             $lead->company,
-            $lead->notes . "\n\nConverted from lead (Source: " . $lead->source . ")"
+            $lead->notes . "\n\nConverted from lead (Source: " . $lead->source->getDisplayName() . ")"
         );
 
         // Transfer interactions from lead to customer
@@ -272,7 +273,7 @@ class LeadsController extends Controller
             $lead->phone,
             $lead->company,
             $lead->source,
-            'converted',
+            LeadStatus::CONVERTED->value,
             $lead->notes
         );
 
