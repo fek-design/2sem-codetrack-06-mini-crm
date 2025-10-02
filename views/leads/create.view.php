@@ -51,6 +51,12 @@ $this->extend('layout');
                 </div>
 
                 <div class="form-group">
+                    <label for="company">Linked In</label>
+                    <input type="text" name="linkedIn" id="linkedIn"
+                           value="<?= htmlspecialchars($old['LinkedIn'] ?? '') ?>">
+                </div>
+
+                <div class="form-group">
                     <label for="source">Lead Source</label>
                     <select name="source" id="source">
                         <option value="none">Select source...</option>

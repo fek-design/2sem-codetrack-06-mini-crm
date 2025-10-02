@@ -50,6 +50,12 @@ $this->extend('layout');
                 </div>
 
                 <div class="form-group">
+                    <label for="company">Linked In</label>
+                    <input type="text" name="linkedIn" id="linkedIn"
+                           value="<?= htmlspecialchars($old['LinkedIn'] ?? '') ?>">
+                </div>
+
+                <div class="form-group">
                     <label for="notes">Notes</label>
                     <textarea name="notes" id="notes" rows="4"><?= htmlspecialchars($old['notes'] ?? '') ?></textarea>
                 </div>
